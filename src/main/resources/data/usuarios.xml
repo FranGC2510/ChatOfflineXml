@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Usuarios>
+    <usuario>
+        <nombre>María</nombre>
+        <apellido>López</apellido>
+        <email>maria@mail.com</email>
+        <password>1234</password>
+    </usuario>
+    <usuario>
+        <nombre>Carlos</nombre>
+        <apellido>García</apellido>
+        <email>carlos@mail.com</email>
+        <password>5678</password>
+    </usuario>
+</Usuarios>
