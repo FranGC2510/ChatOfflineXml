@@ -2,12 +2,17 @@ package org.dam.fcojavier.chatofflinexml.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.dam.fcojavier.chatofflinexml.dataAccess.ConversacionDAO;
 import org.dam.fcojavier.chatofflinexml.dataAccess.UsuarioDAO;
 import org.dam.fcojavier.chatofflinexml.model.Conversacion;
@@ -15,11 +20,14 @@ import org.dam.fcojavier.chatofflinexml.model.Mensaje;
 import org.dam.fcojavier.chatofflinexml.model.Usuario;
 import org.dam.fcojavier.chatofflinexml.utils.SesionUsuario;
 
-import java.net.URL;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class ChatViewController {
@@ -35,17 +43,18 @@ public class ChatViewController {
     private TextField messageTextField;
     @FXML
     private Button sendButton;
+    @FXML
+    private Button statsButton;
+    @FXML
+    private Button exportButton;
 
     private UsuarioDAO usuarioDAO;
     private ConversacionDAO conversacionDAO;
     private Usuario usuarioLogueado;
     private String destinatarioActual;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+    private final DateTimeFormatter exportFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    /**
-     * Este método es llamado automáticamente por el FXMLLoader después de que los
-     * campos @FXML han sido inyectados.
-     */
     public void initialize() {
         this.usuarioDAO = new UsuarioDAO();
         this.conversacionDAO = new ConversacionDAO();
@@ -53,111 +62,71 @@ public class ChatViewController {
 
         cargarUsuarios();
         configurarListeners();
+
+        statsButton.setDisable(true);
+        exportButton.setDisable(true);
     }
 
-    /**
-     * Carga todos los usuarios registrados en el ListView, excepto el usuario logueado.
-     */
     private void cargarUsuarios() {
         userListView.getItems().setAll(
-                usuarioDAO.getUsuariosLista().getUsuarios().stream()
-                        .map(Usuario::getNombre)
-                        .filter(nombre -> !nombre.equals(usuarioLogueado.getNombre()))
-                        .collect(Collectors.toList())
+            usuarioDAO.getUsuariosLista().getUsuarios().stream()
+                    .map(Usuario::getNombre)
+                    .filter(nombre -> !nombre.equals(usuarioLogueado.getNombre()))
+                    .collect(Collectors.toList())
         );
     }
 
-    /**
-     * Configura los manejadores de eventos para los controles de la interfaz.
-     */
     private void configurarListeners() {
         userListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 destinatarioActual = newSelection;
                 cargarConversacion(destinatarioActual);
+                statsButton.setDisable(false);
+                exportButton.setDisable(false);
             }
         });
 
         sendButton.setOnAction(event -> enviarMensaje());
         messageTextField.setOnAction(event -> enviarMensaje());
+        statsButton.setOnAction(event -> abrirVentanaEstadisticas());
+        exportButton.setOnAction(event -> handleExportarConversacion());
     }
 
-    /**
-     * Carga y muestra en la interfaz la conversación con el usuario seleccionado.
-     * @param destinatario El nombre del usuario con quien se carga la conversación.
-     */
     private void cargarConversacion(String destinatario) {
         chatVBox.getChildren().clear();
-
         Optional<Conversacion> convOpt = conversacionDAO.buscarConversacion(usuarioLogueado.getNombre(), destinatario);
-
-        // Si la conversación existe Y NO está vacía, muestra los mensajes.
         if (convOpt.isPresent() && !convOpt.get().getMensajes().isEmpty()) {
             convOpt.get().getMensajes().forEach(this::addMensajeToView);
         } else {
-            // Si no existe o está vacía, muestra el mensaje de bienvenida.
             mostrarMensajeBienvenida(destinatario);
         }
-
-        // Auto-scroll hacia el último mensaje (si lo hay)
         Platform.runLater(() -> chatScrollPane.setVvalue(1.0));
     }
 
-    /**
-     * Crea un objeto Mensaje y lo guarda usando el DAO.
-     * Actualiza la interfaz para mostrar el mensaje enviado.
-     */
     private void enviarMensaje() {
         String texto = messageTextField.getText();
-        if (texto.isBlank() || destinatarioActual == null) {
-            return;
-        }
-
-        // Si la vista de chat estaba mostrando el mensaje de bienvenida, la limpiamos antes de añadir el primer mensaje.
+        if (texto.isBlank() || destinatarioActual == null) return;
         if (chatVBox.getChildren().size() == 1 && chatVBox.getChildren().get(0).getStyleClass().contains("welcome-message")) {
             chatVBox.getChildren().clear();
         }
-
-        // 1. Crear el objeto Mensaje
-        Mensaje nuevoMensaje = new Mensaje(
-                destinatarioActual,
-                usuarioLogueado.getNombre(),
-                texto,
-                LocalDateTime.now(),
-                null // Adjunto no implementado
-        );
-
-        // 2. Guardar el mensaje en el XML
+        Mensaje nuevoMensaje = new Mensaje(destinatarioActual, usuarioLogueado.getNombre(), texto, LocalDateTime.now(), null);
         boolean guardado = conversacionDAO.guardarMensaje(nuevoMensaje, usuarioLogueado.getNombre(), destinatarioActual);
-
-        // 3. Si se guardó, actualizar la interfaz
         if (guardado) {
             addMensajeToView(nuevoMensaje);
             messageTextField.clear();
-            // Auto-scroll hacia el nuevo mensaje
             Platform.runLater(() -> chatScrollPane.setVvalue(1.0));
         } else {
-            // Opcional: Mostrar un error al usuario
             System.err.println("Error al guardar el mensaje.");
         }
     }
 
-    /**
-     * Añade una representación visual de un mensaje al VBox del chat.
-     * @param mensaje El mensaje a mostrar.
-     */
     private void addMensajeToView(Mensaje mensaje) {
         String formattedTime = mensaje.getFechaHora().format(formatter);
         String labelText = String.format("%s [%s]", mensaje.getContenido(), formattedTime);
         Label label = new Label(labelText);
         label.setWrapText(true);
-        label.setMaxWidth(350); // Evita que el label ocupe todo el ancho
-
-        // Contenedor para poder alinear el label
-        HBox hbox = new HBox();
-        hbox.getChildren().add(label);
-
-        // Alinear a la derecha si es nuestro, a la izquierda si es del otro
+        label.setMaxWidth(350);
+        HBox hbox = new HBox(label);
         if (mensaje.getRemitente().equals(usuarioLogueado.getNombre())) {
             hbox.setAlignment(Pos.CENTER_RIGHT);
             label.setStyle("-fx-background-color: #dcf8c6; -fx-padding: 8; -fx-background-radius: 8;");
@@ -165,24 +134,104 @@ public class ChatViewController {
             hbox.setAlignment(Pos.CENTER_LEFT);
             label.setStyle("-fx-background-color: #ffffff; -fx-padding: 8; -fx-background-radius: 8;");
         }
-
         chatVBox.getChildren().add(hbox);
         VBox.setMargin(hbox, new Insets(2, 0, 2, 0));
     }
 
-    /**
-     * Muestra un mensaje centrado para animar al usuario a iniciar la conversación.
-     * @param destinatario El nombre del usuario con el que se va a chatear.
-     */
     private void mostrarMensajeBienvenida(String destinatario) {
         Label label = new Label("¡Aún no hay mensajes! Sé el primero en saludar a " + destinatario + ".");
         label.setStyle("-fx-text-fill: grey; -fx-font-style: italic;");
-
         HBox hbox = new HBox(label);
         hbox.setAlignment(Pos.CENTER);
-
         hbox.getStyleClass().add("welcome-message");
-
         chatVBox.getChildren().add(hbox);
+    }
+
+    /**
+     * Abre la ventana de estadísticas para la conversación actual.
+     */
+    private void abrirVentanaEstadisticas() {
+        if (destinatarioActual == null) return;
+        Optional<Conversacion> convOpt = conversacionDAO.buscarConversacion(usuarioLogueado.getNombre(), destinatarioActual);
+        if (convOpt.isEmpty() || convOpt.get().getMensajes().isEmpty()) {
+            new Alert(Alert.AlertType.INFORMATION, "Aún no hay mensajes en esta conversación para analizar.").showAndWait();
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/dam/fcojavier/chatofflinexml/EstadisticasView.fxml"));
+            Parent root = loader.load();
+            EstadisticasController controller = loader.getController();
+            controller.initData(convOpt.get());
+            Stage stage = new Stage();
+            stage.setTitle("Estadísticas de la conversación con " + destinatarioActual);
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(statsButton.getScene().getWindow());
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "No se pudo abrir la ventana de estadísticas.").showAndWait();
+        }
+    }
+
+    private void handleExportarConversacion() {
+        if (destinatarioActual == null) return;
+
+        Optional<Conversacion> convOpt = conversacionDAO.buscarConversacion(usuarioLogueado.getNombre(), destinatarioActual);
+        if (convOpt.isEmpty() || convOpt.get().getMensajes().isEmpty()) {
+            new Alert(Alert.AlertType.INFORMATION, "No hay nada que exportar.").showAndWait();
+            return;
+        }
+
+        // 1. Preguntar al usuario por el formato
+        List<String> formatos = Arrays.asList("TXT", "CSV");
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("TXT", formatos);
+        dialog.setTitle("Exportar Conversación");
+        dialog.setHeaderText("Elige el formato para exportar la conversación.");
+        dialog.setContentText("Formato:");
+
+        Optional<String> formatoElegido = dialog.showAndWait();
+
+        formatoElegido.ifPresent(formato -> {
+            // 2. Abrir el FileChooser
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Guardar Conversación");
+            fileChooser.setInitialFileName("conversacion_" + destinatarioActual + "." + formato.toLowerCase());
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(formato + " files (*." + formato.toLowerCase() + ")", "*." + formato.toLowerCase());
+            fileChooser.getExtensionFilters().add(extFilter);
+
+            File file = fileChooser.showSaveDialog(exportButton.getScene().getWindow());
+
+            if (file != null) {
+                // 3. Escribir en el fichero
+                try (PrintWriter writer = new PrintWriter(file)) {
+                    Conversacion conversacion = convOpt.get();
+                    if ("CSV".equals(formato)) {
+                        writer.println("Fecha;Remitente;Contenido"); // Cabecera CSV
+                        conversacion.getMensajes().forEach(msg -> {
+                            String linea = String.format("%s;%s;\"%s\"",
+                                    msg.getFechaHora().format(exportFormatter),
+                                    msg.getRemitente(),
+                                    msg.getContenido().replace("\"", "\"\"") // Escapar comillas dobles
+                            );
+                            writer.println(linea);
+                        });
+                    } else { // Formato TXT
+                        conversacion.getMensajes().forEach(msg -> {
+                            String linea = String.format("[%s] %s: %s",
+                                    msg.getFechaHora().format(exportFormatter),
+                                    msg.getRemitente(),
+                                    msg.getContenido()
+                            );
+                            writer.println(linea);
+                        });
+                    }
+                    new Alert(Alert.AlertType.INFORMATION, "Conversación exportada con éxito.").showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, "Error al guardar el fichero.").showAndWait();
+                }
+            }
+        });
     }
 }

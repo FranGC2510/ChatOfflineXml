@@ -19,6 +19,17 @@
    </left>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <top>
+            <HBox alignment="CENTER_RIGHT" prefHeight="40.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="statsButton" mnemonicParsing="false" text="Estadísticas" />
+                  <Button fx:id="exportButton" mnemonicParsing="false" text="Exportar" />
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </HBox>
+         </top>
          <center>
             <ScrollPane fx:id="chatScrollPane" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <content>

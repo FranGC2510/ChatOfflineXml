@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" spacing="15.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.dam.fcojavier.chatofflinexml.controllers.EstadisticasController">
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+   <children>
+      <Label text="Estadísticas de la Conversación">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="totalMensajesLabel" text="Total de mensajes: 0" />
+      <VBox spacing="5.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label text="Palabras más usadas:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <!-- Se ha eliminado prefHeight y se ha añadido VBox.vgrow para que la tabla se expanda -->
+            <TableView fx:id="palabrasTableView" VBox.vgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="palabraColumn" prefWidth="250.0" text="Palabra" />
+                <TableColumn fx:id="frecuenciaColumn" prefWidth="100.0" text="Frecuencia" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+      <VBox spacing="5.0">
+         <children>
+            <Label text="Participación por usuario:">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <PieChart fx:id="participacionPieChart" title="Mensajes por Usuario" />
+         </children>
+      </VBox>
+   </children>
+</VBox>

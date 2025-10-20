@@ -37,6 +37,12 @@
             <fechaHora>20/10/2025 18:52:56</fechaHora>
             <remitente>Maria</remitente>
         </mensaje>
+        <mensaje>
+            <contenido>hola</contenido>
+            <destinatario>Maria</destinatario>
+            <fechaHora>20/10/2025 19:39:32</fechaHora>
+            <remitente>Fran</remitente>
+        </mensaje>
     </mensajes>
     <usuario1>Fran</usuario1>
     <usuario2>Maria</usuario2>
