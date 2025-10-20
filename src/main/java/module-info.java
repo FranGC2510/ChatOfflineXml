@@ -10,10 +10,14 @@ module org.dam.fcojavier.chatofflinexml {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires java.xml.bind;
+    requires jbcrypt;
 
     opens org.dam.fcojavier.chatofflinexml to javafx.fxml;
-    exports org.dam.fcojavier.chatofflinexml;
-
+    opens org.dam.fcojavier.chatofflinexml.controllers to javafx.fxml;
     opens org.dam.fcojavier.chatofflinexml.model to java.xml.bind;
+
+    exports org.dam.fcojavier.chatofflinexml;
+    exports org.dam.fcojavier.chatofflinexml.controllers;
     exports org.dam.fcojavier.chatofflinexml.model;
+    exports org.dam.fcojavier.chatofflinexml.utils;
 }

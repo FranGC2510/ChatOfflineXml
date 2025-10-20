@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Usuarios>
     <usuario>
+        <nombre>Fran</nombre>
+        <apellido>García</apellido>
+        <email>fran@gmail.es</email>
+        <password>$2a$10$4ceOh6k8xG7cO3s3KDovpu3PkvUp.GGV1InP7RCWlHQDQudaoI.8e</password>
+    </usuario>
+    <usuario>
         <nombre>María</nombre>
         <apellido>López</apellido>
         <email>maria@mail.com</email>
