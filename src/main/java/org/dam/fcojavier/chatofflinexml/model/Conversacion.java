@@ -1,15 +1,20 @@
 package org.dam.fcojavier.chatofflinexml.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@XmlRootElement(name = "conversacion")
 public class Conversacion {
     private String usuario1;
     private String usuario2;
     private List<Mensaje> mensajes;
 
     public Conversacion() {
+        this.mensajes = new ArrayList<>();
     }
 
     public Conversacion(String usuario1, String usuario2) {
@@ -18,6 +23,7 @@ public class Conversacion {
         this.mensajes = new ArrayList<>();
     }
 
+    @XmlElement
     public String getUsuario1() {
         return usuario1;
     }
@@ -26,6 +32,7 @@ public class Conversacion {
         this.usuario1 = usuario1;
     }
 
+    @XmlElement
     public String getUsuario2() {
         return usuario2;
     }
@@ -34,6 +41,8 @@ public class Conversacion {
         this.usuario2 = usuario2;
     }
 
+    @XmlElementWrapper(name = "mensajes")
+    @XmlElement(name = "mensaje")
     public List<Mensaje> getMensajes() {
         return mensajes;
     }

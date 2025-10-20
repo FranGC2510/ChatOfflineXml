@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<conversacion>
+    <mensajes>
+        <mensaje>
+            <contenido>hola</contenido>
+            <destinatario>Maria</destinatario>
+            <fechaHora>20/10/2025 18:39:06</fechaHora>
+            <remitente>Fran</remitente>
+        </mensaje>
+        <mensaje>
+            <contenido>que tal?</contenido>
+            <destinatario>Maria</destinatario>
+            <fechaHora>20/10/2025 18:39:11</fechaHora>
+            <remitente>Fran</remitente>
+        </mensaje>
+        <mensaje>
+            <contenido>hola</contenido>
+            <destinatario>Fran</destinatario>
+            <fechaHora>20/10/2025 18:44:46</fechaHora>
+            <remitente>Maria</remitente>
+        </mensaje>
+        <mensaje>
+            <contenido>estoy bien</contenido>
+            <destinatario>Fran</destinatario>
+            <fechaHora>20/10/2025 18:44:50</fechaHora>
+            <remitente>Maria</remitente>
+        </mensaje>
+        <mensaje>
+            <contenido>y tu</contenido>
+            <destinatario>Fran</destinatario>
+            <fechaHora>20/10/2025 18:44:58</fechaHora>
+            <remitente>Maria</remitente>
+        </mensaje>
+        <mensaje>
+            <contenido>😃</contenido>
+            <destinatario>Fran</destinatario>
+            <fechaHora>20/10/2025 18:52:56</fechaHora>
+            <remitente>Maria</remitente>
+        </mensaje>
+    </mensajes>
+    <usuario1>Fran</usuario1>
+    <usuario2>Maria</usuario2>
+</conversacion>

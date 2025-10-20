@@ -1,6 +1,9 @@
 package org.dam.fcojavier.chatofflinexml.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -8,7 +11,10 @@ import javafx.stage.Stage;
 import org.dam.fcojavier.chatofflinexml.dataAccess.UsuarioDAO;
 import org.dam.fcojavier.chatofflinexml.model.Usuario;
 import org.dam.fcojavier.chatofflinexml.utils.PasswordUtilidades;
+import org.dam.fcojavier.chatofflinexml.utils.SesionUsuario;
 import org.dam.fcojavier.chatofflinexml.utils.Validacion;
+
+import java.io.IOException;
 
 /**
  * Controlador para la vista de registro de usuarios.
@@ -30,6 +36,7 @@ public class RegistroController {
     private PasswordField txtConfirmarPassword;
 
     private UsuarioDAO usuarioDAO;
+    private SesionUsuario sessionManager;
 
     /**
      * Inicializa el controlador.
@@ -37,6 +44,7 @@ public class RegistroController {
     @FXML
     public void initialize() {
         usuarioDAO = new UsuarioDAO();
+        sessionManager = SesionUsuario.getInstance();
     }
 
     /**
@@ -101,11 +109,38 @@ public class RegistroController {
         boolean registrado = usuarioDAO.registrarUsuario(nuevoUsuario);
 
         if (registrado) {
-            mostrarAlerta("Éxito", "Usuario registrado correctamente", Alert.AlertType.INFORMATION);
-            limpiarCampos();
-            cerrarVentana();
+            // 1. Establecer la sesión para el nuevo usuario
+            sessionManager.setUsuarioActual(nuevoUsuario);
+
+            // 2. Abrir la ventana de chat
+            abrirVentanaChat();
         } else {
             mostrarAlerta("Error", "Error al registrar el usuario", Alert.AlertType.ERROR);
+        }
+    }
+
+    /**
+     * Carga y muestra la ventana principal del chat y cierra la ventana de registro.
+     */
+    private void abrirVentanaChat() {
+        try {
+            // Cargar el FXML de la vista de chat
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/dam/fcojavier/chatofflinexml/ChatView.fxml"));
+            Parent root = loader.load();
+
+            // Crear una nueva escena y un nuevo stage
+            Stage stage = new Stage();
+            stage.setTitle("Chat Offline - " + sessionManager.getUsuarioActual().getNombre());
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Cerrar la ventana de registro actual
+            Stage registroStage = (Stage) txtNombre.getScene().getWindow();
+            registroStage.close();
+
+        } catch (IOException e) {
+            mostrarAlerta("Error", "No se pudo abrir la ventana de chat.", Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
 
@@ -115,17 +150,6 @@ public class RegistroController {
     @FXML
     private void handleCancelar() {
         cerrarVentana();
-    }
-
-    /**
-     * Limpia todos los campos del formulario.
-     */
-    private void limpiarCampos() {
-        txtNombre.clear();
-        txtApellido.clear();
-        txtEmail.clear();
-        txtPassword.clear();
-        txtConfirmarPassword.clear();
     }
 
     /**

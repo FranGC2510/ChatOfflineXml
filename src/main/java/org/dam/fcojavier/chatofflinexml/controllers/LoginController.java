@@ -71,9 +71,7 @@ public class LoginController {
             // Verificar la contraseña usando BCrypt
             if (PasswordUtilidades.checkPassword(password, usuario.getPassword())) {
                 sessionManager.setUsuarioActual(usuario);
-                mostrarAlerta("Éxito", "Bienvenido " + usuario.getNombre(), Alert.AlertType.INFORMATION);
-                // Aquí podrías abrir la ventana principal de la aplicación
-                // abrirVentanaPrincipal();
+                abrirVentanaChat();
             } else {
                 mostrarAlerta("Error", "Email o contraseña incorrectos", Alert.AlertType.ERROR);
             }
@@ -81,6 +79,32 @@ public class LoginController {
             mostrarAlerta("Error", "Email o contraseña incorrectos", Alert.AlertType.ERROR);
         }
     }
+
+    /**
+     * Carga y muestra la ventana principal del chat y cierra la ventana de login.
+     */
+    private void abrirVentanaChat() {
+        try {
+            // Cargar el FXML de la vista de chat
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/dam/fcojavier/chatofflinexml/ChatView.fxml"));
+            Parent root = loader.load();
+
+            // Crear una nueva escena y un nuevo stage
+            Stage stage = new Stage();
+            stage.setTitle("Chat Offline - " + sessionManager.getUsuarioActual().getNombre());
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Cerrar la ventana de login actual
+            Stage loginStage = (Stage) txtEmail.getScene().getWindow();
+            loginStage.close();
+
+        } catch (IOException e) {
+            mostrarAlerta("Error", "No se pudo abrir la ventana de chat.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Maneja el evento de abrir la ventana de registro.

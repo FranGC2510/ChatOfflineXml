@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<conversacion>
+    <mensajes>
+        <mensaje>
+            <contenido>hola</contenido>
+            <destinatario>Antonio</destinatario>
+            <fechaHora>20/10/2025 19:05:03</fechaHora>
+            <remitente>Fran</remitente>
+        </mensaje>
+    </mensajes>
+    <usuario1>Fran</usuario1>
+    <usuario2>Antonio</usuario2>
+</conversacion>
