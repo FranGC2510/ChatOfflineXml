@@ -1,0 +1,82 @@
+/* Hoja de Estilo Global para la Aplicación ChatOffline */
+
+/* --- Estilos Generales y Títulos --- */
+.title {
+    -fx-fill: #333333;
+}
+
+/* --- Estilos para Botones --- */
+.button {
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+}
+
+.btn-primary {
+    -fx-background-color: #2A7CD2;
+    -fx-text-fill: white;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1A4B8F;
+}
+
+.btn-secondary {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #5a6268;
+}
+
+/* --- Burbujas de Chat --- */
+.chat-bubble {
+    -fx-text-fill: white;
+    -fx-padding: 8px;
+    -fx-background-radius: 8px;
+}
+
+.chat-bubble-sent {
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #4CAF50, #8BC34A);
+    -fx-effect: dropshadow(three-pass-box, rgba(139, 195, 74, 0.4), 5, 0, 2, 2);
+}
+
+.chat-bubble-received {
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #1A4B8F, #2A7CD2);
+    -fx-effect: dropshadow(three-pass-box, rgba(42, 124, 210, 0.4), 5, 0, 2, 2);
+}
+
+/* --- Mensaje de Bienvenida --- */
+.welcome-message .label {
+    -fx-text-fill: grey;
+    -fx-font-style: italic;
+}
+
+/* === ESTILOS ESPECÍFICOS PARA CHATVIEW === */
+
+#userListPane {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: transparent #dee2e6 transparent transparent;
+}
+
+#userListView .list-cell:filled:selected {
+    -fx-background-color: #2A7CD2;
+    -fx-text-fill: white;
+}
+
+#chatScrollPane {
+    -fx-background-color: #e9ecef;
+}
+
+/* --- Gráfico de Estadísticas --- */
+
+/* Se sobreescriben los colores por defecto del PieChart */
+.default-color0.chart-pie { -fx-pie-color: #2A7CD2; } /* Azul principal */
+.default-color1.chart-pie { -fx-pie-color: #4CAF50; } /* Verde principal */
+.default-color2.chart-pie { -fx-pie-color: #1A4B8F; } /* Azul oscuro */
+.default-color3.chart-pie { -fx-pie-color: #8BC34A; } /* Verde claro */
+
+/* Estilo para las etiquetas del gráfico (nombre y porcentaje) */
+.chart-pie-label {
+    -fx-fill: black;
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Usuarios>
+    <usuario>
+        <nombre>Antonio</nombre>
+        <apellido>Garcia</apellido>
+        <email>ant@gmail.es</email>
+        <password>$2a$10$5DljpbEpyJFQi2n82E/GkuxeRN1ZRnZy1vGmNIBRbWi/UUSQsDyVC</password>
+    </usuario>
+    <usuario>
+        <nombre>Fran</nombre>
+        <apellido>García</apellido>
+        <email>fran@gmail.es</email>
+        <password>$2a$10$4ceOh6k8xG7cO3s3KDovpu3PkvUp.GGV1InP7RCWlHQDQudaoI.8e</password>
+    </usuario>
+    <usuario>
+        <nombre>Fernando</nombre>
+        <apellido>Sanchez</apellido>
+        <email>fer@gmail.es</email>
+        <password>$2a$10$xJ8Oyax5KJbnZazONF0w1uGfoaCk1mT9NG5FZySK3bBfEdlKlWDpa</password>
+    </usuario>
+    <usuario>
+        <nombre>Maria</nombre>
+        <apellido>Lopez</apellido>
+        <email>mar@gmail.es</email>
+        <password>$2a$10$hGcKR1M6nZEn277fsaUiTuByRjkpa97dgfdQ978YhO9OmtdRNVMTW</password>
+    </usuario>
+</Usuarios>
