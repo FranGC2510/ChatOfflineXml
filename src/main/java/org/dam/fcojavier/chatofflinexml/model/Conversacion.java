@@ -3,11 +3,14 @@ package org.dam.fcojavier.chatofflinexml.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @XmlRootElement(name = "conversacion")
+// Se añade esta anotación para definir el orden de los elementos en el XML
+@XmlType(propOrder = { "usuario1", "usuario2", "mensajes" })
 public class Conversacion {
     private String usuario1;
     private String usuario2;

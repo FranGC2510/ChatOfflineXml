@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.dam.fcojavier.chatofflinexml.controllers.ChatViewController">
@@ -30,21 +31,24 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <HBox alignment="CENTER_RIGHT" prefHeight="40.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <!-- HBox reestructurado para alinear botones a izquierda y derecha -->
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="statsButton" mnemonicParsing="false" styleClass="btn-secondary" text="Estadísticas" />
                   <Button fx:id="exportButton" mnemonicParsing="false" styleClass="btn-secondary" text="Exportar" />
+                  <!-- Este Region actúa como un espaciador flexible -->
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleCerrarSesion" styleClass="btn-secondary" text="Cerrar Sesión" />
                </children>
                <padding>
-                  <Insets right="10.0" />
+                  <Insets left="10.0" right="10.0" />
                </padding>
             </HBox>
          </top>
          <center>
             <ScrollPane id="chatScrollPane" fx:id="chatScrollPane" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <content>
-                  <!-- Se elimina el id="chatVBox" que ya no es necesario -->
-                  <VBox fx:id="chatVBox" spacing="10.0">
+                  <VBox id="chatVBox" fx:id="chatVBox" spacing="10.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>

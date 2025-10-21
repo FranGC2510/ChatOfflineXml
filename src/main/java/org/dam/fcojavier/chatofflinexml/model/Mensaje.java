@@ -2,11 +2,14 @@ package org.dam.fcojavier.chatofflinexml.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.dam.fcojavier.chatofflinexml.utils.AdaptadorLocalDateTimeXml;
 import java.time.LocalDateTime;
 
 @XmlRootElement(name = "mensaje")
+@XmlType(propOrder = { "remitente", "destinatario", "fechaHora", "contenido" })
 public class Mensaje {
 
     private String destinatario;
@@ -62,6 +65,9 @@ public class Mensaje {
         this.fechaHora = fechaHora;
     }
 
+    // Se marca como @XmlTransient para que JAXB ignore esta propiedad,
+    // ya que no está incluida en propOrder y aún no se ha implementado.
+    @XmlTransient
     public Adjunto getAdjunto() {
         return adjunto;
     }

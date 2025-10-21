@@ -47,6 +47,8 @@ public class ChatViewController {
     private Button statsButton;
     @FXML
     private Button exportButton;
+    @FXML
+    private Button logoutButton;
 
     private UsuarioDAO usuarioDAO;
     private ConversacionDAO conversacionDAO;
@@ -90,6 +92,7 @@ public class ChatViewController {
         messageTextField.setOnAction(event -> enviarMensaje());
         statsButton.setOnAction(event -> abrirVentanaEstadisticas());
         exportButton.setOnAction(event -> handleExportarConversacion());
+        //logoutButton.setOnAction(event -> handleCerrarSesion());
     }
 
     private void cargarConversacion(String destinatario) {
@@ -242,5 +245,34 @@ public class ChatViewController {
                 }
             }
         });
+    }
+
+    /**
+     * Cierra la sesión del usuario y vuelve a la pantalla de login.
+     */
+    @FXML
+    private void handleCerrarSesion() {
+        // 1. Limpiar la sesión actual
+        SesionUsuario.getInstance().cerrarSesion();
+
+        try {
+            // 2. Cargar la vista de login
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/dam/fcojavier/chatofflinexml/login-view.fxml"));
+            Parent root = loader.load();
+
+            // 3. Crear y mostrar la nueva ventana de login
+            Stage loginStage = new Stage();
+            loginStage.setTitle("Chat Offline - Inicio de Sesión");
+            loginStage.setScene(new Scene(root));
+            loginStage.setResizable(false);
+            loginStage.show();
+
+            // 4. Cerrar la ventana actual del chat
+            Stage chatStage = (Stage) logoutButton.getScene().getWindow();
+            chatStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "No se pudo volver a la pantalla de inicio de sesión.").showAndWait();
+        }
     }
 }
