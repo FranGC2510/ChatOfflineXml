@@ -1,46 +1,72 @@
-/* Estilos generales */
-.root {
-    -fx-font-family: "Segoe UI", Arial, sans-serif;
-    -fx-font-size: 14px;
-}
+/* Hoja de Estilo Global para la Aplicación ChatOffline */
 
+/* --- Estilos Generales y Títulos --- */
 .title {
-    -fx-text-fill: #2c3e50;
-    -fx-font-weight: bold;
+    -fx-fill: #333333;
 }
 
-/* Botones */
-.btn-primary {
-    -fx-background-color: #3498db;
-    -fx-text-fill: white;
+/* --- Estilos para Botones --- */
+.button {
     -fx-font-weight: bold;
-    -fx-cursor: hand;
     -fx-background-radius: 5px;
+}
+
+.btn-primary {
+    -fx-background-color: #2A7CD2;
+    -fx-text-fill: white;
 }
 
 .btn-primary:hover {
-    -fx-background-color: #2980b9;
+    -fx-background-color: #1A4B8F;
 }
 
 .btn-secondary {
-    -fx-background-color: #95a5a6;
+    -fx-background-color: #6c757d;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-cursor: hand;
-    -fx-background-radius: 5px;
 }
 
 .btn-secondary:hover {
-    -fx-background-color: #7f8c8d;
+    -fx-background-color: #5a6268;
 }
 
-/* Campos de texto */
-.text-field, .password-field {
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
+/* --- Burbujas de Chat --- */
+.chat-bubble {
+    -fx-text-fill: white;
+    -fx-padding: 8px;
+    -fx-background-radius: 8px;
 }
 
-.text-field:focused, .password-field:focused {
-    -fx-border-color: #3498db;
-    -fx-border-width: 2px;
+.chat-bubble-sent {
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #4CAF50, #8BC34A);
+    -fx-effect: dropshadow(three-pass-box, rgba(139, 195, 74, 0.4), 5, 0, 2, 2);
+}
+
+.chat-bubble-received {
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #1A4B8F, #2A7CD2);
+    -fx-effect: dropshadow(three-pass-box, rgba(42, 124, 210, 0.4), 5, 0, 2, 2);
+}
+
+/* --- Mensaje de Bienvenida --- */
+.welcome-message .label {
+    -fx-text-fill: grey;
+    -fx-font-style: italic;
+}
+
+/* === ESTILOS ESPECÍFICOS PARA CHATVIEW === */
+
+/* Fondo del panel de la lista de usuarios */
+#userListPane {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: transparent #dee2e6 transparent transparent;
+}
+
+/* Color de selección para la lista de usuarios */
+#userListView .list-cell:filled:selected {
+    -fx-background-color: #2A7CD2;
+    -fx-text-fill: white;
+}
+
+/* Fondo del área de chat (restaurado a color sólido) */
+#chatScrollPane {
+    -fx-background-color: #e9ecef;
 }

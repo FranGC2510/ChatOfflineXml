@@ -43,6 +43,24 @@
             <fechaHora>20/10/2025 19:39:32</fechaHora>
             <remitente>Fran</remitente>
         </mensaje>
+        <mensaje>
+            <contenido>que haces</contenido>
+            <destinatario>Maria</destinatario>
+            <fechaHora>21/10/2025 09:05:40</fechaHora>
+            <remitente>Fran</remitente>
+        </mensaje>
+        <mensaje>
+            <contenido>rrrr</contenido>
+            <destinatario>Maria</destinatario>
+            <fechaHora>21/10/2025 09:24:33</fechaHora>
+            <remitente>Fran</remitente>
+        </mensaje>
+        <mensaje>
+            <contenido>sdsd</contenido>
+            <destinatario>Maria</destinatario>
+            <fechaHora>21/10/2025 09:26:21</fechaHora>
+            <remitente>Fran</remitente>
+        </mensaje>
     </mensajes>
     <usuario1>Fran</usuario1>
     <usuario2>Maria</usuario2>

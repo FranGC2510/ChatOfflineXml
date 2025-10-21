@@ -86,7 +86,7 @@ public class EstadisticasController {
         // Obtener los datos del analizador
         Map<String, Long> palabrasMasUsadas = AnalizadorConversacion.encontrarPalabrasMasUsadas(conversacion, 10);
 
-        // Convertir el mapa a una lista observable de nuestro record
+        // Convertir el mapa a una lista observable para la TableView
         ObservableList<PalabraFrecuencia> datosTabla = palabrasMasUsadas.entrySet().stream()
                 .map(entry -> new PalabraFrecuencia(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));

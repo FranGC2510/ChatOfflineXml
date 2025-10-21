@@ -126,24 +126,33 @@ public class ChatViewController {
         Label label = new Label(labelText);
         label.setWrapText(true);
         label.setMaxWidth(350);
+
+        label.getStyleClass().add("chat-bubble");
+        if (mensaje.getRemitente().equals(usuarioLogueado.getNombre())) {
+            label.getStyleClass().add("chat-bubble-sent");
+        } else {
+            label.getStyleClass().add("chat-bubble-received");
+        }
+
+        // El HBox se usa SOLO para alinear el Label a la derecha o izquierda
         HBox hbox = new HBox(label);
         if (mensaje.getRemitente().equals(usuarioLogueado.getNombre())) {
             hbox.setAlignment(Pos.CENTER_RIGHT);
-            label.setStyle("-fx-background-color: #dcf8c6; -fx-padding: 8; -fx-background-radius: 8;");
         } else {
             hbox.setAlignment(Pos.CENTER_LEFT);
-            label.setStyle("-fx-background-color: #ffffff; -fx-padding: 8; -fx-background-radius: 8;");
         }
+
         chatVBox.getChildren().add(hbox);
         VBox.setMargin(hbox, new Insets(2, 0, 2, 0));
     }
 
     private void mostrarMensajeBienvenida(String destinatario) {
         Label label = new Label("¡Aún no hay mensajes! Sé el primero en saludar a " + destinatario + ".");
-        label.setStyle("-fx-text-fill: grey; -fx-font-style: italic;");
         HBox hbox = new HBox(label);
         hbox.setAlignment(Pos.CENTER);
+        // La clase 'welcome-message' en el HBox aplicará el estilo al Label hijo gracias al CSS
         hbox.getStyleClass().add("welcome-message");
+
         chatVBox.getChildren().add(hbox);
     }
 

@@ -13,6 +13,12 @@
         <password>$2a$10$4ceOh6k8xG7cO3s3KDovpu3PkvUp.GGV1InP7RCWlHQDQudaoI.8e</password>
     </usuario>
     <usuario>
+        <nombre>Fernando</nombre>
+        <apellido>Sanchez</apellido>
+        <email>fer@gmail.es</email>
+        <password>$2a$10$xJ8Oyax5KJbnZazONF0w1uGfoaCk1mT9NG5FZySK3bBfEdlKlWDpa</password>
+    </usuario>
+    <usuario>
         <nombre>Maria</nombre>
         <apellido>Lopez</apellido>
         <email>mar@gmail.es</email>

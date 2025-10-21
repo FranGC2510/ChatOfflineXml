@@ -4,7 +4,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import java.io.InputStream;
 
 public class ChatOfflineApp extends Application {
     @Override
@@ -15,6 +18,15 @@ public class ChatOfflineApp extends Application {
 
         // Configurar la escena
         Scene scene = new Scene(root);
+
+        // --- Carga del Icono ---
+        // Intentamos establecer el icono de la ventana. En macOS, esto no afectará al Dock, pero es inofensivo.
+        try {
+            Image appIcon = new Image("/images/logo2.png");
+            primaryStage.getIcons().add(appIcon);
+        } catch (Exception e) {
+            System.err.println("Aviso: No se pudo cargar el icono de la aplicación desde /images/logo2.png. El icono no se mostrará.");
+        }
 
         // Configurar el stage
         primaryStage.setTitle("Chat Offline - Inicio de Sesión");
