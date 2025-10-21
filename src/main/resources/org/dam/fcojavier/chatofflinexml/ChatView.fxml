@@ -60,6 +60,8 @@
             <HBox spacing="10.0" BorderPane.alignment="CENTER">
                <children>
                   <TextField fx:id="messageTextField" HBox.hgrow="ALWAYS" />
+                  <!-- Nuevo botón de adjuntar -->
+                  <Button fx:id="attachButton" mnemonicParsing="false" styleClass="btn-secondary" text="Adjuntar" />
                   <Button fx:id="sendButton" mnemonicParsing="false" styleClass="btn-primary" text="Enviar" />
                </children>
                <padding>

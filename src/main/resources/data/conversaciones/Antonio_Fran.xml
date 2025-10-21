@@ -27,5 +27,29 @@
             <fechaHora>21/10/2025 12:11:17</fechaHora>
             <contenido>bien y tu</contenido>
         </mensaje>
+        <mensaje>
+            <remitente>Fran</remitente>
+            <destinatario>Antonio</destinatario>
+            <fechaHora>21/10/2025 16:40:40</fechaHora>
+            <contenido>mira esto</contenido>
+        </mensaje>
+        <mensaje>
+            <remitente>Fran</remitente>
+            <destinatario>Antonio</destinatario>
+            <fechaHora>21/10/2025 16:41:14</fechaHora>
+            <contenido>te mola?</contenido>
+            <adjunto>
+                <nombre>Comunicación verbal y no verbal.pdf</nombre>
+                <ruta>media/Comunicación verbal y no verbal.pdf</ruta>
+                <tamano>97252</tamano>
+                <tipo>pdf</tipo>
+            </adjunto>
+        </mensaje>
+        <mensaje>
+            <remitente>Fran</remitente>
+            <destinatario>Antonio</destinatario>
+            <fechaHora>21/10/2025 17:07:53</fechaHora>
+            <contenido>hola</contenido>
+        </mensaje>
     </mensajes>
 </conversacion>

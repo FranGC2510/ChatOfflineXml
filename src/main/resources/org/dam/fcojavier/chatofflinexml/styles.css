@@ -31,9 +31,13 @@
 
 /* --- Burbujas de Chat --- */
 .chat-bubble {
-    -fx-text-fill: white;
     -fx-padding: 8px;
     -fx-background-radius: 8px;
+}
+
+/* Estilo para el texto principal dentro de las burbujas */
+.chat-content {
+    -fx-fill: white;
 }
 
 .chat-bubble-sent {
@@ -70,13 +74,24 @@
 
 /* --- Gráfico de Estadísticas --- */
 
-/* Se sobreescriben los colores por defecto del PieChart */
-.default-color0.chart-pie { -fx-pie-color: #2A7CD2; } /* Azul principal */
-.default-color1.chart-pie { -fx-pie-color: #4CAF50; } /* Verde principal */
-.default-color2.chart-pie { -fx-pie-color: #1A4B8F; } /* Azul oscuro */
-.default-color3.chart-pie { -fx-pie-color: #8BC34A; } /* Verde claro */
+.default-color0.chart-pie { -fx-pie-color: #2A7CD2; }
+.default-color1.chart-pie { -fx-pie-color: #4CAF50; }
+.default-color2.chart-pie { -fx-pie-color: #1A4B8F; }
+.default-color3.chart-pie { -fx-pie-color: #8BC34A; }
 
-/* Estilo para las etiquetas del gráfico (nombre y porcentaje) */
 .chart-pie-label {
     -fx-fill: black;
+}
+
+/* --- Estilo para Adjuntos Faltantes --- */
+.adjunto-faltante {
+    -fx-fill: #D32F2F; /* Color rojo para el texto del adjunto faltante */
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+}
+
+/* --- Estilo para la hora del mensaje --- */
+.chat-timestamp {
+    -fx-fill: #E0E0E0; /* Gris claro para la hora */
+    -fx-font-size: 0.8em;
 }
