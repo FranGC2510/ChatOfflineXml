@@ -5,6 +5,12 @@
     -fx-fill: #333333;
 }
 
+.user-list-title {
+    -fx-text-fill: #2A7CD2; /* Azul principal de la app */
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+}
+
 /* --- Estilos para Botones --- */
 .button {
     -fx-font-weight: bold;

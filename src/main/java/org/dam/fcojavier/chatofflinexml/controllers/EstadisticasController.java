@@ -1,5 +1,7 @@
 package org.dam.fcojavier.chatofflinexml.controllers;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,7 +9,6 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import org.dam.fcojavier.chatofflinexml.model.Conversacion;
 import org.dam.fcojavier.chatofflinexml.utils.AnalizadorConversacion;
 
@@ -35,22 +36,7 @@ public class EstadisticasController {
     /**
      * Clase interna estática para representar los datos en la TableView.
      */
-    public static class PalabraFrecuencia {
-        private final String palabra;
-        private final Long frecuencia;
-
-        public PalabraFrecuencia(String palabra, Long frecuencia) {
-            this.palabra = palabra;
-            this.frecuencia = frecuencia;
-        }
-
-        public String getPalabra() {
-            return palabra;
-        }
-
-        public Long getFrecuencia() {
-            return frecuencia;
-        }
+    public record PalabraFrecuencia(String palabra, Long frecuencia) {
     }
 
     /**
@@ -79,9 +65,9 @@ public class EstadisticasController {
      * @param conversacion La conversación a analizar.
      */
     private void configurarTablaPalabras(Conversacion conversacion) {
-        // Configurar las celdas de la tabla
-        palabraColumn.setCellValueFactory(new PropertyValueFactory<>("palabra"));
-        frecuenciaColumn.setCellValueFactory(new PropertyValueFactory<>("frecuencia"));
+        // Configurar las celdas de la tabla para que sean compatibles con el 'record'
+        palabraColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().palabra()));
+        frecuenciaColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().frecuencia()));
 
         // Obtener los datos del analizador
         Map<String, Long> palabrasMasUsadas = AnalizadorConversacion.encontrarPalabrasMasUsadas(conversacion, 10);

@@ -5,9 +5,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -23,6 +26,7 @@ import org.dam.fcojavier.chatofflinexml.model.Mensaje;
 import org.dam.fcojavier.chatofflinexml.model.Usuario;
 import org.dam.fcojavier.chatofflinexml.utils.SesionUsuario;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -201,7 +205,7 @@ public class ChatViewController {
     }
 
     private void addMensajeToView(Mensaje mensaje) {
-        // --- MÉTODO COMPLETAMENTE REESCRITO ---
+        // --- MÉTODO MODIFICADO PARA PREVISUALIZACIÓN DE ADJUNTOS CON ICONOS Y ESTILO DE TEXTO ---
 
         // 1. Crear el contenedor TextFlow y aplicar estilos de burbuja
         TextFlow textFlow = new TextFlow();
@@ -216,28 +220,70 @@ public class ChatViewController {
         // 2. Añadir el contenido del mensaje si existe
         if (mensaje.getContenido() != null && !mensaje.getContenido().isBlank()) {
             Text contentText = new Text(mensaje.getContenido());
-            contentText.getStyleClass().add("chat-content"); // <-- AÑADIDO
+            contentText.getStyleClass().add("chat-content");
             textFlow.getChildren().add(contentText);
         }
 
-        // 3. Añadir la información del adjunto si existe
+        // 3. Añadir la previsualización del adjunto si existe
         if (mensaje.getAdjunto() != null) {
             // Añadir un salto de línea si ya había texto
-            if (!textFlow.getChildren().isEmpty()) {
+            if (!textFlow.getChildren().isEmpty() && (mensaje.getContenido() != null && !mensaje.getContenido().isBlank())) {
                 textFlow.getChildren().add(new Text("\n"));
             }
 
-            Text adjuntoText;
-            Path adjuntoPath = Paths.get(mensaje.getAdjunto().getRuta());
+            Adjunto adjunto = mensaje.getAdjunto();
+            Path adjuntoPath = Paths.get(adjunto.getRuta());
 
-            // Comprobar si el archivo existe y aplicar estilo si no
             if (Files.exists(adjuntoPath)) {
-                adjuntoText = new Text("[Adjunto: " + mensaje.getAdjunto().getNombre() + "]");
+                Node previewNode;
+                if (adjunto.esImagen()) {
+                    try {
+                        Image image = new Image(adjuntoPath.toUri().toString(), 200, 0, true, true); // width, height (0=preserve ratio), preserveRatio, smooth
+                        ImageView imageView = new ImageView(image);
+                        previewNode = imageView;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Text errorText = new Text("[Error al cargar imagen: " + adjunto.getNombre() + "]");
+                        errorText.getStyleClass().add("chat-content"); // Aplicar estilo de contenido
+                        previewNode = errorText;
+                    }
+                } else {
+                    // Contenedor para el icono y el texto del archivo
+                    HBox filePreviewBox = new HBox(5); // Espacio de 5px entre elementos
+                    filePreviewBox.setAlignment(Pos.CENTER_LEFT);
+
+                    ImageView iconView = getFileIcon(adjunto.getExtension());
+                    Text fileNameText = new Text(adjunto.getNombre());
+                    fileNameText.getStyleClass().add("chat-content"); // Aplicar estilo de contenido
+                    fileNameText.setUnderline(true);
+                    fileNameText.setStyle("-fx-cursor: hand;"); // Cursor de mano para indicar que es clickeable
+
+                    filePreviewBox.getChildren().addAll(iconView, fileNameText);
+                    previewNode = filePreviewBox;
+                }
+
+                // Añadir evento de clic para abrir el archivo
+                previewNode.setOnMouseClicked(event -> {
+                    try {
+                        // Usar Desktop para abrir el archivo con la app por defecto del sistema
+                        Desktop.getDesktop().open(adjuntoPath.toFile());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        new Alert(Alert.AlertType.ERROR, "No se pudo abrir el archivo: " + e.getMessage()).showAndWait();
+                    } catch (UnsupportedOperationException e) {
+                        e.printStackTrace();
+                        new Alert(Alert.AlertType.ERROR, "La apertura de archivos no es soportada en este sistema.").showAndWait();
+                    }
+                });
+                textFlow.getChildren().add(previewNode);
+
             } else {
-                adjuntoText = new Text("[Adjunto: " + mensaje.getAdjunto().getNombre() + " (FALTA)]");
-                adjuntoText.getStyleClass().add("adjunto-faltante"); // Aplicar estilo solo a este texto
+                // Si el archivo no existe
+                Text adjuntoFaltanteText = new Text("[Adjunto: " + adjunto.getNombre() + " (FALTA)]");
+                adjuntoFaltanteText.getStyleClass().add("adjunto-faltante");
+                adjuntoFaltanteText.getStyleClass().add("chat-content"); // Aplicar estilo de contenido
+                textFlow.getChildren().add(adjuntoFaltanteText);
             }
-            textFlow.getChildren().add(adjuntoText);
         }
 
         // 4. Añadir la hora del mensaje
@@ -258,6 +304,42 @@ public class ChatViewController {
         VBox.setMargin(hbox, new Insets(2, 0, 2, 0));
     }
 
+    private ImageView getFileIcon(String extension) {
+        String iconPath = null;
+        switch (extension.toLowerCase()) {
+            case "pdf":
+                iconPath = "/images/pdf.png";
+                break;
+            case "doc":
+            case "docx":
+                iconPath = "/images/doc.png";
+                break;
+            case "txt":
+                iconPath = "/images/txt.png";
+                break;
+            case "zip":
+            case "rar":
+                iconPath = "/images/comprimir.png";
+                break;
+            default:
+                // Icono genérico para otros tipos de archivo o null si no se quiere mostrar nada
+                iconPath = "/images/doc.png"; // Usar un icono genérico de documento por defecto
+                break;
+        }
+
+        if (iconPath != null) {
+            try {
+                Image icon = new Image(getClass().getResourceAsStream(iconPath));
+                ImageView iconView = new ImageView(icon);
+                iconView.setFitWidth(24); // Tamaño del icono
+                iconView.setFitHeight(24);
+                return iconView;
+            } catch (Exception e) {
+                System.err.println("Error loading icon: " + iconPath + ", " + e.getMessage());
+            }
+        }
+        return new ImageView(); // Retorna un ImageView vacío si no se encuentra el icono
+    }
 
     private void mostrarMensajeBienvenida(String destinatario) {
         Label label = new Label("¡Aún no hay mensajes! Sé el primero en saludar a " + destinatario + ".");
@@ -377,7 +459,8 @@ public class ChatViewController {
                                 );
                                 writer.println(linea);
                             });
-                        } else { // Formato TXT
+                        }
+                        else { // Formato TXT
                             conversacion.getMensajes().forEach(msg -> {
                                 String linea = String.format("[%s] %s: %s",
                                         msg.getFechaHora().format(exportFormatter),

@@ -11,6 +11,7 @@ module org.dam.fcojavier.chatofflinexml {
     requires eu.hansolo.tilesfx;
     requires java.xml.bind;
     requires jbcrypt;
+    requires java.desktop;
 
     opens org.dam.fcojavier.chatofflinexml to javafx.fxml;
     opens org.dam.fcojavier.chatofflinexml.controllers to javafx.fxml;
