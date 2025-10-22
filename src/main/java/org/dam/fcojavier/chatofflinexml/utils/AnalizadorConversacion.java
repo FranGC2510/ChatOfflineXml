@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -58,6 +59,7 @@ public class AnalizadorConversacion {
 
         return conversacion.getMensajes().stream() // 1. Stream de Mensajes
                 .map(Mensaje::getContenido) // 2. Stream de Strings (contenido de cada mensaje)
+                .filter(Objects::nonNull) // <-- FIX: Ignora mensajes sin contenido de texto
                 .map(String::toLowerCase) // 3. Pasa todo a minúsculas
                 .flatMap(linea -> Arrays.stream(linea.split("[\\s.,!?;:]+"))) // 4. Divide por espacios/puntuación y aplana a un stream de palabras
                 .filter(palabra -> !palabra.isBlank()) // 5. Filtra posibles palabras vacías
