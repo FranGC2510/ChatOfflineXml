@@ -15,6 +15,10 @@ import org.dam.fcojavier.chatofflinexml.utils.AnalizadorConversacion;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador para la ventana de estadísticas de una conversación.
+ * Muestra información como el número total de mensajes, las palabras más frecuentes y la participación de cada usuario.
+ */
 public class EstadisticasController {
 
     // --- FXML Fields ---
@@ -34,15 +38,17 @@ public class EstadisticasController {
     private PieChart participacionPieChart;
 
     /**
-     * Clase interna estática para representar los datos en la TableView.
+     * Clase interna para representar la frecuencia de las palabras en la TableView.
+     * @param palabra La palabra encontrada en la conversación.
+     * @param frecuencia El número de veces que la palabra aparece.
      */
     public record PalabraFrecuencia(String palabra, Long frecuencia) {
     }
 
     /**
-     * Método para inicializar el controlador con los datos de la conversación a analizar.
+     * Inicializa el controlador con los datos de la conversación a analizar.
      * Este método debe ser llamado desde el ChatViewController después de cargar la vista.
-     * @param conversacion La conversación a analizar.
+     * @param conversacion La conversación de la cual se extraerán y mostrarán las estadísticas.
      */
     public void initData(Conversacion conversacion) {
         if (conversacion == null) {
@@ -61,7 +67,7 @@ public class EstadisticasController {
     }
 
     /**
-     * Configura y puebla la TableView con las 10 palabras más usadas.
+     * Configura y puebla la TableView con las 10 palabras más usadas en la conversación.
      * @param conversacion La conversación a analizar.
      */
     private void configurarTablaPalabras(Conversacion conversacion) {
@@ -81,7 +87,8 @@ public class EstadisticasController {
     }
 
     /**
-     * Configura y puebla el PieChart con la participación de cada usuario.
+     * Configura y puebla el PieChart con la participación de cada usuario en la conversación.
+     * La participación se mide por el número de mensajes enviados por cada usuario.
      * @param conversacion La conversación a analizar.
      */
     private void configurarGraficoParticipacion(Conversacion conversacion) {

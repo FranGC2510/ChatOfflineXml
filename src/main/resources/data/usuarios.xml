@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Usuarios>
+    <usuario>
+        <nombre>Antonio</nombre>
+        <apellido>Lopez</apellido>
+        <email>ant@gmail.es</email>
+        <password>$2a$10$LpWGuh46eQgLiUXUsDT15e/j7pCFEPTpY4LCOAkgGzGb5SenQW2IG</password>
+    </usuario>
+    <usuario>
+        <nombre>Fran</nombre>
+        <apellido>Garcia</apellido>
+        <email>fran@gmail.es</email>
+        <password>$2a$10$imrm0HBsNSxnA/2WdpVxiearD1FEPjeOs8C6WexZl9pe/d0/FV4B6</password>
+    </usuario>
+</Usuarios>

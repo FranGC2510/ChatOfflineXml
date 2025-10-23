@@ -18,6 +18,10 @@ import org.dam.fcojavier.chatofflinexml.utils.Validacion;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Controlador para la ventana de inicio de sesión.
+ * Permite a los usuarios ingresar con su email y contraseña para acceder a la aplicación de chat.
+ */
 public class LoginController {
     @FXML
     private TextField txtEmail;
@@ -30,6 +34,7 @@ public class LoginController {
 
     /**
      * Inicializa el controlador.
+     * Se encarga de instanciar los objetos necesarios para la gestión de usuarios y la sesión.
      */
     @FXML
     public void initialize() {
@@ -39,6 +44,7 @@ public class LoginController {
 
     /**
      * Maneja el evento de inicio de sesión.
+     * Valida las credenciales del usuario y, si son correctas, abre la ventana de chat.
      */
     @FXML
     private void handleIniciarSesion() {
