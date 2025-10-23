@@ -44,6 +44,11 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * Controlador para la vista principal del chat.
+ * Gestiona la lista de usuarios, la visualización de conversaciones, el envío de mensajes y archivos adjuntos,
+ * la exportación de conversaciones y el acceso a las estadísticas.
+ */
 public class ChatViewController {
 
     // --- FXML Fields ---
@@ -75,6 +80,10 @@ public class ChatViewController {
 
     private File archivoAdjunto;
 
+    /**
+     * Inicializa el controlador después de que se hayan cargado los elementos FXML.
+     * Configura los DAOs, obtiene el usuario logueado, carga la lista de usuarios y configura los listeners de la UI.
+     */
     public void initialize() {
         this.usuarioDAO = new UsuarioDAO();
         this.conversacionDAO = new ConversacionDAO();
@@ -87,6 +96,9 @@ public class ChatViewController {
         exportButton.setDisable(true);
     }
 
+    /**
+     * Carga la lista de usuarios registrados en la `userListView`, excluyendo al usuario logueado.
+     */
     private void cargarUsuarios() {
         userListView.getItems().setAll(
             usuarioDAO.getUsuariosLista().getUsuarios().stream()
@@ -96,6 +108,10 @@ public class ChatViewController {
         );
     }
 
+    /**
+     * Configura los listeners para los elementos de la interfaz de usuario, como la selección de usuario,
+     * los botones de enviar, estadísticas, exportar, adjuntar y cerrar sesión.
+     */
     private void configurarListeners() {
         userListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -114,6 +130,10 @@ public class ChatViewController {
         logoutButton.setOnAction(event -> handleCerrarSesion());
     }
 
+    /**
+     * Abre un FileChooser para que el usuario seleccione un archivo para adjuntar al mensaje.
+     * Las extensiones permitidas se obtienen de la clase {@link Adjunto}.
+     */
     @FXML
     private void handleAdjuntarArchivo() {
         FileChooser fileChooser = new FileChooser();
@@ -138,6 +158,11 @@ public class ChatViewController {
         }
     }
 
+    /**
+     * Carga y muestra la conversación con el destinatario seleccionado.
+     * Si no hay mensajes, muestra un mensaje de bienvenida.
+     * @param destinatario El nombre del usuario con el que se carga la conversación.
+     */
     private void cargarConversacion(String destinatario) {
         chatVBox.getChildren().clear();
         Optional<Conversacion> convOpt = conversacionDAO.buscarConversacion(usuarioLogueado.getNombre(), destinatario);
@@ -149,6 +174,10 @@ public class ChatViewController {
         Platform.runLater(() -> chatScrollPane.setVvalue(1.0));
     }
 
+    /**
+     * Procesa y envía un mensaje de texto y/o un archivo adjunto al destinatario actual.
+     * El mensaje se guarda en la persistencia y se añade a la vista del chat.
+     */
     private void enviarMensaje() {
         String texto = messageTextField.getText();
         if ((texto.isBlank() && archivoAdjunto == null) || destinatarioActual == null) return;
@@ -204,9 +233,12 @@ public class ChatViewController {
         }
     }
 
+    /**
+     * Añade un mensaje a la vista del chat, formateándolo como una burbuja de chat.
+     * Muestra el contenido del texto, una previsualización del adjunto (si existe) y la hora del mensaje.
+     * @param mensaje El mensaje a mostrar.
+     */
     private void addMensajeToView(Mensaje mensaje) {
-        // --- MÉTODO MODIFICADO PARA PREVISUALIZACIÓN DE ADJUNTOS CON ICONOS Y ESTILO DE TEXTO ---
-
         // 1. Crear el contenedor TextFlow y aplicar estilos de burbuja
         TextFlow textFlow = new TextFlow();
         textFlow.getStyleClass().add("chat-bubble");
@@ -304,6 +336,11 @@ public class ChatViewController {
         VBox.setMargin(hbox, new Insets(2, 0, 2, 0));
     }
 
+    /**
+     * Obtiene un icono gráfico para un tipo de archivo basado en su extensión.
+     * @param extension La extensión del archivo (ej. "pdf", "docx").
+     * @return Un {@link ImageView} con el icono correspondiente.
+     */
     private ImageView getFileIcon(String extension) {
         String iconPath = null;
         switch (extension.toLowerCase()) {
@@ -341,6 +378,10 @@ public class ChatViewController {
         return new ImageView(); // Retorna un ImageView vacío si no se encuentra el icono
     }
 
+    /**
+     * Muestra un mensaje de bienvenida en el área de chat cuando no hay mensajes previos.
+     * @param destinatario El nombre del destinatario para personalizar el mensaje.
+     */
     private void mostrarMensajeBienvenida(String destinatario) {
         Label label = new Label("¡Aún no hay mensajes! Sé el primero en saludar a " + destinatario + ".");
         HBox hbox = new HBox(label);
@@ -350,6 +391,10 @@ public class ChatViewController {
         chatVBox.getChildren().add(hbox);
     }
 
+    /**
+     * Abre la ventana de estadísticas para la conversación actual.
+     * Si no hay mensajes, muestra una alerta informativa.
+     */
     @FXML
     private void abrirVentanaEstadisticas() {
         if (destinatarioActual == null) return;
@@ -375,6 +420,10 @@ public class ChatViewController {
         }
     }
 
+    /**
+     * Maneja la exportación de la conversación actual a diferentes formatos (TXT, CSV, ZIP).
+     * Muestra un diálogo para que el usuario elija el formato y luego un FileChooser para guardar el archivo.
+     */
     private void handleExportarConversacion() {
         if (destinatarioActual == null) return;
 
@@ -483,6 +532,9 @@ public class ChatViewController {
         });
     }
 
+    /**
+     * Cierra la sesión del usuario actual, cierra la ventana de chat y abre la ventana de inicio de sesión.
+     */
     @FXML
     private void handleCerrarSesion() {
         SesionUsuario.getInstance().cerrarSesion();

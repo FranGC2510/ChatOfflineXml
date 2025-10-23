@@ -10,24 +10,29 @@ import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * Clase DAO para gestionar la persistencia de conversaciones.
- * Cada conversación se guarda en su propio archivo XML para mayor eficiencia.
+ * Clase DAO (Data Access Object) para gestionar la persistencia de conversaciones.
+ * Se encarga de leer, guardar y actualizar las conversaciones en archivos XML individuales.
+ * Cada conversación se identifica por los nombres de los dos usuarios participantes.
  */
 public class ConversacionDAO {
+    /**
+     * Directorio donde se almacenan los archivos XML de las conversaciones.
+     */
     private static final String CONVERSACIONES_DIR = "src/main/resources/data/conversaciones/";
 
     /**
-     * Constructor vacío requerido por JAXB para la deserialización.
+     * Constructor por defecto de la clase ConversacionDAO.
      */
     public ConversacionDAO() {
     }
 
     /**
-     * Genera la ruta del archivo para una conversación entre dos usuarios.
-     * Ordena los nombres de usuario para asegurar una única ruta por par de usuarios.
-     * @param usuario1 Un participante.
-     * @param usuario2 El otro participante.
-     * @return La ruta absoluta al archivo XML de la conversación.
+     * Genera la ruta completa del archivo XML para una conversación específica entre dos usuarios.
+     * Los nombres de los usuarios se ordenan alfabéticamente para asegurar un nombre de archivo consistente
+     * y único para cada par de usuarios, independientemente del orden en que se proporcionen.
+     * @param usuario1 El nombre del primer participante en la conversación.
+     * @param usuario2 El nombre del segundo participante en la conversación.
+     * @return La ruta absoluta al archivo XML donde se guarda o se leerá la conversación.
      */
     private String getConversationPath(String usuario1, String usuario2) {
         String[] usuarios = {usuario1, usuario2};
@@ -37,9 +42,10 @@ public class ConversacionDAO {
     }
 
     /**
-     * Guarda un objeto Conversacion en su archivo XML correspondiente.
-     * @param conversacion La conversación a guardar.
-     * @return true si se guardó correctamente, false en caso contrario.
+     * Guarda un objeto {@link Conversacion} en su archivo XML correspondiente.
+     * La ruta del archivo se determina usando los nombres de los usuarios de la conversación.
+     * @param conversacion La instancia de {@link Conversacion} que se desea guardar.
+     * @return {@code true} si la conversación se guardó exitosamente, {@code false} en caso contrario.
      */
     private boolean guardarConversacion(Conversacion conversacion) {
         String path = getConversationPath(conversacion.getUsuario1(), conversacion.getUsuario2());
@@ -48,9 +54,11 @@ public class ConversacionDAO {
 
     /**
      * Busca y carga una conversación existente entre dos usuarios desde su archivo XML.
-     * @param usuario1 Un participante.
-     * @param usuario2 El otro participante.
-     * @return Un Optional<Conversacion> si el archivo existe y se puede leer.
+     * Si no se encuentra el archivo o no se puede leer, devuelve un {@link Optional#empty()}.
+     * @param usuario1 El nombre del primer participante.
+     * @param usuario2 El nombre del segundo participante.
+     * @return Un {@link Optional} que contiene la {@link Conversacion} si se encuentra y se puede cargar,
+     *         o un {@link Optional#empty()} si la conversación no existe o hay un error de lectura.
      */
     public Optional<Conversacion> buscarConversacion(String usuario1, String usuario2) {
         String path = getConversationPath(usuario1, usuario2);
@@ -65,12 +73,13 @@ public class ConversacionDAO {
     }
 
     /**
-     * Guarda un nuevo mensaje.
-     * Carga la conversación si existe, o crea una nueva. Añade el mensaje y guarda.
-     * @param mensaje El objeto Mensaje a guardar.
-     * @param remitente El username del remitente.
-     * @param destinatario El username del destinatario.
-     * @return true si se pudo guardar, false en caso de error.
+     * Guarda un nuevo mensaje en la conversación correspondiente entre el remitente y el destinatario.
+     * Si la conversación no existe previamente, se crea una nueva. El mensaje se añade a la lista de mensajes
+     * de la conversación y luego la conversación (actualizada o nueva) se guarda en su archivo XML.
+     * @param mensaje El objeto {@link Mensaje} que se desea guardar.
+     * @param remitente El nombre del remitente del mensaje.
+     * @param destinatario El nombre del destinatario del mensaje.
+     * @return {@code true} si el mensaje se guardó exitosamente dentro de la conversación, {@code false} en caso de error.
      */
     public boolean guardarMensaje(Mensaje mensaje, String remitente, String destinatario) {
         try {

@@ -18,6 +18,8 @@ import java.io.IOException;
 
 /**
  * Controlador para la vista de registro de usuarios.
+ * Permite a los nuevos usuarios registrarse en el sistema proporcionando sus datos personales y una contraseña.
+ * Realiza validaciones de los campos y, si el registro es exitoso, inicia sesión automáticamente al usuario.
  */
 public class RegistroController {
     @FXML
@@ -39,7 +41,8 @@ public class RegistroController {
     private SesionUsuario sessionManager;
 
     /**
-     * Inicializa el controlador.
+     * Inicializa el controlador después de que se hayan cargado los elementos FXML.
+     * Se encarga de instanciar los objetos necesarios para la gestión de usuarios y la sesión.
      */
     @FXML
     public void initialize() {
@@ -49,6 +52,9 @@ public class RegistroController {
 
     /**
      * Maneja el evento de registro de un nuevo usuario.
+     * Recoge los datos de los campos de texto, realiza validaciones (campos vacíos, formato de email, formato de contraseña,
+     * coincidencia de contraseñas, email existente) y, si todo es correcto, registra al usuario.
+     * Si el registro es exitoso, el usuario inicia sesión y se abre la ventana de chat.
      */
     @FXML
     private void handleRegistrar() {
@@ -120,7 +126,8 @@ public class RegistroController {
     }
 
     /**
-     * Carga y muestra la ventana principal del chat y cierra la ventana de registro.
+     * Carga y muestra la ventana principal del chat y cierra la ventana de registro actual.
+     * En caso de error al cargar la ventana, muestra una alerta.
      */
     private void abrirVentanaChat() {
         try {
@@ -146,6 +153,7 @@ public class RegistroController {
 
     /**
      * Maneja el evento de cancelar el registro.
+     * Cierra la ventana de registro actual.
      */
     @FXML
     private void handleCancelar() {
@@ -153,7 +161,7 @@ public class RegistroController {
     }
 
     /**
-     * Cierra la ventana actual.
+     * Cierra la ventana actual del registro.
      */
     private void cerrarVentana() {
         Stage stage = (Stage) txtNombre.getScene().getWindow();
@@ -161,10 +169,10 @@ public class RegistroController {
     }
 
     /**
-     * Muestra una alerta con el mensaje especificado.
-     * @param titulo Título de la alerta.
-     * @param mensaje Mensaje de la alerta.
-     * @param tipo Tipo de alerta.
+     * Muestra una alerta con el título, mensaje y tipo especificados.
+     * @param titulo El título de la alerta.
+     * @param mensaje El mensaje a mostrar en la alerta.
+     * @param tipo El tipo de alerta (ERROR, INFORMATION, WARNING, etc.).
      */
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
