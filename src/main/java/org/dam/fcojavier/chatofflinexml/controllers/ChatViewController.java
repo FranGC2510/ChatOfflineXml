@@ -25,6 +25,7 @@ import org.dam.fcojavier.chatofflinexml.model.Conversacion;
 import org.dam.fcojavier.chatofflinexml.model.Mensaje;
 import org.dam.fcojavier.chatofflinexml.model.Usuario;
 import org.dam.fcojavier.chatofflinexml.utils.SesionUsuario;
+import org.dam.fcojavier.chatofflinexml.utils.UsuarioListCell;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -53,7 +54,7 @@ public class ChatViewController {
 
     // --- FXML Fields ---
     @FXML
-    private ListView<String> userListView;
+    private ListView<Usuario> userListView;
     @FXML
     private ScrollPane chatScrollPane;
     @FXML
@@ -101,9 +102,8 @@ public class ChatViewController {
      */
     private void cargarUsuarios() {
         userListView.getItems().setAll(
-            usuarioDAO.getUsuariosLista().getUsuarios().stream()
-                    .map(Usuario::getNombre)
-                    .filter(nombre -> !nombre.equals(usuarioLogueado.getNombre()))
+                usuarioDAO.getUsuariosLista().getUsuarios().stream()
+                    .filter(usuario -> !usuario.getNombre().equals(usuarioLogueado.getNombre()))
                     .collect(Collectors.toList())
         );
     }
@@ -113,9 +113,12 @@ public class ChatViewController {
      * los botones de enviar, estadísticas, exportar, adjuntar y cerrar sesión.
      */
     private void configurarListeners() {
+        // Asignar la celda personalizada a la ListView
+        userListView.setCellFactory(listView -> new UsuarioListCell());
+
         userListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                destinatarioActual = newSelection;
+                destinatarioActual = newSelection.getNombre();
                 cargarConversacion(destinatarioActual);
                 statsButton.setDisable(false);
                 exportButton.setDisable(false);
@@ -165,6 +168,7 @@ public class ChatViewController {
      */
     private void cargarConversacion(String destinatario) {
         chatVBox.getChildren().clear();
+        chatVBox.setAlignment(Pos.TOP_LEFT); // Restaurar alineación por defecto
         Optional<Conversacion> convOpt = conversacionDAO.buscarConversacion(usuarioLogueado.getNombre(), destinatario);
         if (convOpt.isPresent() && !convOpt.get().getMensajes().isEmpty()) {
             convOpt.get().getMensajes().forEach(this::addMensajeToView);
@@ -182,6 +186,7 @@ public class ChatViewController {
         String texto = messageTextField.getText();
         if ((texto.isBlank() && archivoAdjunto == null) || destinatarioActual == null) return;
 
+        chatVBox.setAlignment(Pos.TOP_LEFT); // Asegurar alineación correcta al enviar
         if (chatVBox.getChildren().size() == 1 && chatVBox.getChildren().get(0).getStyleClass().contains("welcome-message")) {
             chatVBox.getChildren().clear();
         }
@@ -384,11 +389,9 @@ public class ChatViewController {
      */
     private void mostrarMensajeBienvenida(String destinatario) {
         Label label = new Label("¡Aún no hay mensajes! Sé el primero en saludar a " + destinatario + ".");
-        HBox hbox = new HBox(label);
-        hbox.setAlignment(Pos.CENTER);
-        hbox.getStyleClass().add("welcome-message");
-
-        chatVBox.getChildren().add(hbox);
+        label.getStyleClass().add("welcome-message");
+        chatVBox.setAlignment(Pos.CENTER); // Centrar el contenido del VBox
+        chatVBox.getChildren().add(label);
     }
 
     /**

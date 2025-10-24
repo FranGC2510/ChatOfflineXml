@@ -12,10 +12,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import org.dam.fcojavier.chatofflinexml.model.Usuario?>
 
+<?import javafx.collections.FXCollections?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.dam.fcojavier.chatofflinexml.controllers.ChatViewController">
    <left>
-      <VBox id="userListPane" fx:id="userListPane" alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox id="userListPane" alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -30,7 +32,11 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Label>
-            <ListView id="userListView" fx:id="userListView" VBox.vgrow="ALWAYS" />
+            <ListView id="userListView" fx:id="userListView" VBox.vgrow="ALWAYS">
+               <items>
+                  <FXCollections fx:factory="observableArrayList"/>
+               </items>
+            </ListView>
          </children>
       </VBox>
    </left>
@@ -52,7 +58,7 @@
             </HBox>
          </top>
          <center>
-            <ScrollPane id="chatScrollPane" fx:id="chatScrollPane" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <ScrollPane id="chatScrollPane" fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <content>
                   <VBox id="chatVBox" fx:id="chatVBox" spacing="10.0">
                      <padding>
@@ -63,7 +69,7 @@
             </ScrollPane>
          </center>
          <bottom>
-            <HBox spacing="10.0" BorderPane.alignment="CENTER">
+            <HBox fx:id="messageInputBar" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
                   <TextField fx:id="messageTextField" HBox.hgrow="ALWAYS" />
                   <!-- Nuevo botón de adjuntar -->

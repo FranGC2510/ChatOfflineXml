@@ -44,6 +44,7 @@
 /* Estilo para el texto principal dentro de las burbujas */
 .chat-content {
     -fx-fill: white;
+    -fx-font-size: 1.3em; /* Aumentar el tamaño de la fuente para el contenido del mensaje */
 }
 
 .chat-bubble-sent {
@@ -57,25 +58,141 @@
 }
 
 /* --- Mensaje de Bienvenida --- */
-.welcome-message .label {
+.welcome-message {
     -fx-text-fill: grey;
     -fx-font-style: italic;
+    -fx-font-size: 1.5em; /* Hacemos el texto más grande */
+    -fx-text-alignment: center; /* Centramos el texto si ocupa varias líneas */
+    -fx-wrap-text: true; /* Permitir que el texto se divida en varias líneas */
+}
+
+/* === ESTILOS PARA LOGIN Y REGISTRO === */
+
+/* Contenedor principal de la ventana */
+.login-pane {
+    -fx-background-color: linear-gradient(to bottom, #f8f9fa, #8BC34A);
+}
+
+/* Contenedor del formulario */
+.form-container {
+    -fx-background-color: white;
+    -fx-padding: 30px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5);
+    -fx-max-width: 450px;
+}
+
+/* Estilo para los campos de texto y contraseña */
+.login-pane .text-field,
+.login-pane .password-field {
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-color: #ced4da;
+    -fx-background-color: white;
+    -fx-prompt-text-fill: #adb5bd;
+    -fx-font-size: 1.1em;
+}
+
+/* Efecto de foco para los campos de texto */
+.login-pane .text-field:focused,
+.login-pane .password-field:focused {
+    -fx-border-color: #2A7CD2;
+    -fx-effect: dropshadow(three-pass-box, rgba(42, 124, 210, 0.3), 5, 0, 0, 0);
 }
 
 /* === ESTILOS ESPECÍFICOS PARA CHATVIEW === */
 
 #userListPane {
-    -fx-background-color: #f8f9fa;
-    -fx-border-color: transparent #dee2e6 transparent transparent;
+    -fx-background-color: linear-gradient(to bottom, #f8f9fa, #8BC34A);
+    -fx-border-color: transparent; /* Eliminamos el borde derecho */
 }
 
-#userListView .list-cell:filled:selected {
-    -fx-background-color: #2A7CD2;
+/* --- Estilos para la ListView de Usuarios --- */
+#userListView {
+    -fx-background-color: transparent; /* Eliminar fondo por defecto */
+    -fx-border-color: transparent; /* Eliminar borde por defecto */
+    -fx-padding: 0; /* Eliminar padding por defecto */
+}
+
+/* Estilo para la barra de desplazamiento */
+#userListView .scroll-bar:vertical .track-background,
+#userListView .scroll-bar:vertical .track {
+    -fx-background-color: transparent; /* Hacer el track de la scrollbar transparente */
+}
+
+#userListView .scroll-bar:vertical .thumb {
+    -fx-background-color: #dee2e6; /* Color del thumb de la scrollbar */
+    -fx-background-radius: 5;
+}
+
+#userListView .scroll-bar:vertical .increment-button,
+#userListView .scroll-bar:vertical .decrement-button {
+    -fx-padding: 0; /* Eliminar botones de incremento/decremento */
+}
+
+/* Estilo para cada celda de la lista de usuarios */
+#userListView .list-cell {
+    -fx-background-color: transparent; /* Fondo transparente para las celdas */
+    -fx-padding: 8px 10px; /* Padding para cada celda */
+    -fx-alignment: CENTER_LEFT; /* Alinear contenido a la izquierda */
+    -fx-text-fill: #333333; /* Color de texto por defecto */
+    -fx-font-size: 1.0em;
+}
+
+/* Estilo al pasar el ratón por encima de una celda */
+#userListView .list-cell:filled:hover {
+    -fx-background-color: #eaf4ff; /* Azul muy claro al pasar el ratón */
+    -fx-cursor: hand; /* Cursor de mano para indicar interactividad */
+    -fx-background-radius: 20px; /* Redondea las esquinas para el efecto burbuja */
+    -fx-background-insets: 2px 5px 2px 5px; /* Margen para que la burbuja no toque los bordes */
+}
+
+/* Estilo de la celda seleccionada */
+#userListView .list-cell:filled:selected,
+#userListView .list-cell:filled:selected:hover { /* También para el hover en selección */
+    -fx-background-color: #2A7CD2; /* Color de fondo de la burbuja */
+    -fx-text-fill: white; /* Color del texto dentro de la burbuja */
+    -fx-background-radius: 20px; /* Redondea las esquinas para el efecto burbuja */
+    -fx-background-insets: 2px 5px 2px 5px; /* Margen para que la burbuja no toque los bordes */
+}
+
+/* Asegurar que el label dentro de la celda seleccionada también sea blanco */
+#userListView .list-cell:filled:selected .user-list-cell-label {
     -fx-text-fill: white;
+}
+
+/* Estilo para el Label dentro de UsuarioListCell (nombre del usuario) */
+.user-list-cell-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+    -fx-text-fill: #333333; /* Color de texto por defecto */
 }
 
 #chatScrollPane {
     -fx-background-color: #e9ecef;
+}
+
+/* --- Barra de Entrada de Mensajes --- */
+#messageInputBar {
+    -fx-background-color: #8BC34A; /* Verde a juego con el degradado */
+    -fx-border-color: #4CAF50 transparent transparent transparent; /* Borde superior en verde oscuro */
+    -fx-border-width: 1px;
+    -fx-alignment: CENTER;
+}
+
+#messageTextField {
+    -fx-background-radius: 20px; /* Bordes redondeados para efecto píldora */
+    -fx-border-radius: 20px;
+    -fx-border-color: #ced4da;
+    -fx-background-color: white;
+    -fx-prompt-text-fill: #adb5bd;
+    -fx-font-size: 1.1em;
+}
+
+/* Estilo cuando el campo de texto está enfocado (haciendo clic en él) */
+#messageTextField:focused {
+    -fx-border-color: #2A7CD2; /* Resaltar con el color principal de la app */
+    -fx-effect: dropshadow(three-pass-box, rgba(42, 124, 210, 0.3), 5, 0, 0, 0);
 }
 
 /* --- Gráfico de Estadísticas --- */
@@ -99,5 +216,5 @@
 /* --- Estilo para la hora del mensaje --- */
 .chat-timestamp {
     -fx-fill: #E0E0E0; /* Gris claro para la hora */
-    -fx-font-size: 0.8em;
+    -fx-font-size: 1.1em; /* Aumentar ligeramente el tamaño de la fuente para la hora */
 }
