@@ -32,7 +32,7 @@
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </Label>
-            <ListView id="userListView" fx:id="userListView" VBox.vgrow="ALWAYS">
+            <ListView id="userListView" fx:id="listaUsuarios" VBox.vgrow="ALWAYS">
                <items>
                   <FXCollections fx:factory="observableArrayList"/>
                </items>
@@ -46,11 +46,11 @@
             <!-- HBox reestructurado para alinear botones a izquierda y derecha -->
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="statsButton" mnemonicParsing="false" styleClass="btn-secondary" text="Estadísticas" />
-                  <Button fx:id="exportButton" mnemonicParsing="false" styleClass="btn-secondary" text="Exportar" />
+                  <Button fx:id="botonEstadisticas" mnemonicParsing="false" styleClass="btn-secondary" text="Estadísticas" />
+                  <Button fx:id="botonExportar" mnemonicParsing="false" styleClass="btn-secondary" text="Exportar" />
                   <!-- Este Region actúa como un espaciador flexible -->
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleCerrarSesion" styleClass="btn-secondary" text="Cerrar Sesión" />
+                  <Button fx:id="botonCerrarSesion" mnemonicParsing="false" onAction="#gestionarCerrarSesion" styleClass="btn-secondary" text="Cerrar Sesión" />
                </children>
                <padding>
                   <Insets left="10.0" right="10.0" />
@@ -58,9 +58,9 @@
             </HBox>
          </top>
          <center>
-            <ScrollPane id="chatScrollPane" fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <ScrollPane id="chatScrollPane" fx:id="panelChat" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <content>
-                  <VBox id="chatVBox" fx:id="chatVBox" spacing="10.0">
+                  <VBox id="chatVBox" fx:id="contenedorChat" spacing="10.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -69,12 +69,12 @@
             </ScrollPane>
          </center>
          <bottom>
-            <HBox fx:id="messageInputBar" spacing="10.0" BorderPane.alignment="CENTER">
+            <HBox fx:id="barraEntradaMensaje" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextField fx:id="messageTextField" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="campoMensaje" HBox.hgrow="ALWAYS" />
                   <!-- Nuevo botón de adjuntar -->
-                  <Button fx:id="attachButton" mnemonicParsing="false" styleClass="btn-secondary" text="Adjuntar" />
-                  <Button fx:id="sendButton" mnemonicParsing="false" styleClass="btn-primary" text="Enviar" />
+                  <Button fx:id="botonAdjuntar" mnemonicParsing="false" styleClass="btn-secondary" text="Adjuntar" />
+                  <Button fx:id="botonEnviar" mnemonicParsing="false" styleClass="btn-primary" text="Enviar" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

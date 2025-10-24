@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<conversacion>
+    <usuario1>Fran</usuario1>
+    <usuario2>Antonio</usuario2>
+    <mensajes>
+        <mensaje>
+            <remitente>Fran</remitente>
+            <destinatario>Antonio</destinatario>
+            <fechaHora>24/10/2025 18:08:33</fechaHora>
+            <contenido>Hola</contenido>
+        </mensaje>
+        <mensaje>
+            <remitente>Fran</remitente>
+            <destinatario>Antonio</destinatario>
+            <fechaHora>24/10/2025 18:08:38</fechaHora>
+            <contenido>mira esto</contenido>
+        </mensaje>
+        <mensaje>
+            <remitente>Fran</remitente>
+            <destinatario>Antonio</destinatario>
+            <fechaHora>24/10/2025 18:08:48</fechaHora>
+            <contenido>flipa </contenido>
+            <adjunto>
+                <nombre>Captura de pantalla 2025-10-22 a las 10.13.30.png</nombre>
+                <ruta>media/Captura de pantalla 2025-10-22 a las 10.13.30.png</ruta>
+                <tamano>42917</tamano>
+                <tipo>png</tipo>
+            </adjunto>
+        </mensaje>
+        <mensaje>
+            <remitente>Antonio</remitente>
+            <destinatario>Fran</destinatario>
+            <fechaHora>24/10/2025 18:25:28</fechaHora>
+            <contenido>que chulo esta</contenido>
+        </mensaje>
+        <mensaje>
+            <remitente>Antonio</remitente>
+            <destinatario>Fran</destinatario>
+            <fechaHora>24/10/2025 18:25:32</fechaHora>
+            <contenido>me encanta</contenido>
+        </mensaje>
+    </mensajes>
+</conversacion>

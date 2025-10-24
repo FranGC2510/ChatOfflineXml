@@ -24,22 +24,22 @@ import java.util.Optional;
  */
 public class LoginController {
     @FXML
-    private TextField txtEmail;
+    private TextField campoEmail;
 
     @FXML
-    private PasswordField txtPassword;
+    private PasswordField campoPassword;
 
     private UsuarioDAO usuarioDAO;
-    private SesionUsuario sessionManager;
+    private SesionUsuario gestorSesion;
 
     /**
      * Inicializa el controlador.
      * Se encarga de instanciar los objetos necesarios para la gestión de usuarios y la sesión.
      */
     @FXML
-    public void initialize() {
+    public void inicializar() {
         usuarioDAO = new UsuarioDAO();
-        sessionManager = SesionUsuario.getInstance();
+        gestorSesion = SesionUsuario.getInstance();
     }
 
     /**
@@ -47,9 +47,9 @@ public class LoginController {
      * Valida las credenciales del usuario y, si son correctas, abre la ventana de chat.
      */
     @FXML
-    private void handleIniciarSesion() {
-        String email = txtEmail.getText();
-        String password = txtPassword.getText();
+    private void gestionarInicioSesion() {
+        String email = campoEmail.getText();
+        String password = campoPassword.getText();
 
         // Validaciones de campos vacíos
         if (email == null || email.trim().isEmpty()) {
@@ -76,7 +76,7 @@ public class LoginController {
 
             // Verificar la contraseña usando BCrypt
             if (PasswordUtilidades.checkPassword(password, usuario.getPassword())) {
-                sessionManager.setUsuarioActual(usuario);
+                gestorSesion.setUsuarioActual(usuario);
                 abrirVentanaChat();
             } else {
                 mostrarAlerta("Error", "Email o contraseña incorrectos", Alert.AlertType.ERROR);
@@ -97,12 +97,12 @@ public class LoginController {
 
             // Crear una nueva escena y un nuevo stage
             Stage stage = new Stage();
-            stage.setTitle("Chat Offline - " + sessionManager.getUsuarioActual().getNombre());
+            stage.setTitle("Chat Offline - " + gestorSesion.getUsuarioActual().getNombre());
             stage.setScene(new Scene(root));
             stage.show();
 
             // Cerrar la ventana de login actual
-            Stage loginStage = (Stage) txtEmail.getScene().getWindow();
+            Stage loginStage = (Stage) campoEmail.getScene().getWindow();
             loginStage.close();
 
         } catch (IOException e) {
@@ -116,7 +116,7 @@ public class LoginController {
      * Maneja el evento de abrir la ventana de registro.
      */
     @FXML
-    private void handleAbrirRegistro() {
+    private void gestionarAbrirRegistro() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/dam/fcojavier/chatofflinexml/registro-view.fxml"));
             Parent root = loader.load();

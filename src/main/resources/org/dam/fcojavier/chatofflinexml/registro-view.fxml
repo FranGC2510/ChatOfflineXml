@@ -34,15 +34,15 @@
                     </columnConstraints>
                     <children>
                         <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="txtNombre" promptText="Tu nombre" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="campoNombre" promptText="Tu nombre" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                         <Label text="Apellido:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="txtApellido" promptText="Tu apellido" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="campoApellido" promptText="Tu apellido" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <TextField fx:id="txtEmail" promptText="ejemplo@correo.com" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="campoEmail" promptText="ejemplo@correo.com" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <PasswordField fx:id="txtPassword" promptText="********" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <PasswordField fx:id="campoPassword" promptText="********" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label text="Repetir Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <PasswordField fx:id="txtConfirmPassword" promptText="********" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <PasswordField fx:id="campoConfirmarPassword" promptText="********" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     </children>
                     <rowConstraints>
                         <RowConstraints />
@@ -54,8 +54,8 @@
                 </GridPane>
                 <HBox alignment="CENTER" spacing="15.0">
                     <children>
-                        <Button onAction="#handleRegistrar" prefWidth="150.0" styleClass="btn-primary" text="Registrar" />
-                        <Button onAction="#handleCancelar" prefWidth="150.0" styleClass="btn-secondary" text="Cancelar" />
+                        <Button onAction="#gestionarRegistro" prefWidth="150.0" styleClass="btn-primary" text="Registrar" />
+                        <Button onAction="#gestionarCancelacion" prefWidth="150.0" styleClass="btn-secondary" text="Cancelar" />
                     </children>
                 </HBox>
             </children>
