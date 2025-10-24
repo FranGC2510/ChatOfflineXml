@@ -35,10 +35,10 @@
               </columnConstraints>
       
               <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-              <TextField fx:id="txtEmail" promptText="ejemplo@correo.com" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+              <TextField fx:id="campoEmail" promptText="ejemplo@correo.com" GridPane.columnIndex="1" GridPane.rowIndex="0" />
       
               <Label text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-              <PasswordField fx:id="txtPassword" promptText="********" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+              <PasswordField fx:id="campoPassword" promptText="********" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <rowConstraints>
                <RowConstraints />
                <RowConstraints />
@@ -46,8 +46,8 @@
           </GridPane>
       
           <HBox alignment="CENTER" spacing="15.0">
-              <Button onAction="#handleIniciarSesion" prefWidth="150.0" styleClass="btn-primary" text="Iniciar Sesión" />
-              <Button onAction="#handleAbrirRegistro" prefWidth="150.0" styleClass="btn-secondary" text="Registrarse" />
+              <Button onAction="#gestionarInicioSesion" prefWidth="150.0" styleClass="btn-primary" text="Iniciar Sesión" />
+              <Button onAction="#gestionarAbrirRegistro" prefWidth="150.0" styleClass="btn-secondary" text="Registrarse" />
           </HBox>
       </VBox>
    </children>

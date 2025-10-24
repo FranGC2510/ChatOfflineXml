@@ -54,30 +54,30 @@ public class ChatViewController {
 
     // --- FXML Fields ---
     @FXML
-    private ListView<Usuario> userListView;
+    private ListView<Usuario> listaUsuarios;
     @FXML
-    private ScrollPane chatScrollPane;
+    private ScrollPane panelChat;
     @FXML
-    private VBox chatVBox;
+    private VBox contenedorChat;
     @FXML
-    private TextField messageTextField;
+    private TextField campoMensaje;
     @FXML
-    private Button sendButton;
+    private Button botonEnviar;
     @FXML
-    private Button statsButton;
+    private Button botonEstadisticas;
     @FXML
-    private Button exportButton;
+    private Button botonExportar;
     @FXML
-    private Button logoutButton;
+    private Button botonCerrarSesion;
     @FXML
-    private Button attachButton;
+    private Button botonAdjuntar;
 
     private UsuarioDAO usuarioDAO;
     private ConversacionDAO conversacionDAO;
     private Usuario usuarioLogueado;
     private String destinatarioActual;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-    private final DateTimeFormatter exportFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+    private final DateTimeFormatter formatoExportacion = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private File archivoAdjunto;
 
@@ -85,7 +85,7 @@ public class ChatViewController {
      * Inicializa el controlador después de que se hayan cargado los elementos FXML.
      * Configura los DAOs, obtiene el usuario logueado, carga la lista de usuarios y configura los listeners de la UI.
      */
-    public void initialize() {
+    public void inicializar() {
         this.usuarioDAO = new UsuarioDAO();
         this.conversacionDAO = new ConversacionDAO();
         this.usuarioLogueado = SesionUsuario.getInstance().getUsuarioActual();
@@ -93,15 +93,15 @@ public class ChatViewController {
         cargarUsuarios();
         configurarListeners();
 
-        statsButton.setDisable(true);
-        exportButton.setDisable(true);
+        botonEstadisticas.setDisable(true);
+        botonExportar.setDisable(true);
     }
 
     /**
      * Carga la lista de usuarios registrados en la `userListView`, excluyendo al usuario logueado.
      */
     private void cargarUsuarios() {
-        userListView.getItems().setAll(
+        listaUsuarios.getItems().setAll(
                 usuarioDAO.getUsuariosLista().getUsuarios().stream()
                     .filter(usuario -> !usuario.getNombre().equals(usuarioLogueado.getNombre()))
                     .collect(Collectors.toList())
@@ -114,23 +114,23 @@ public class ChatViewController {
      */
     private void configurarListeners() {
         // Asignar la celda personalizada a la ListView
-        userListView.setCellFactory(listView -> new UsuarioListCell());
+        listaUsuarios.setCellFactory(listView -> new UsuarioListCell());
 
-        userListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        listaUsuarios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 destinatarioActual = newSelection.getNombre();
                 cargarConversacion(destinatarioActual);
-                statsButton.setDisable(false);
-                exportButton.setDisable(false);
+                botonEstadisticas.setDisable(false);
+                botonExportar.setDisable(false);
             }
         });
 
-        sendButton.setOnAction(event -> enviarMensaje());
-        messageTextField.setOnAction(event -> enviarMensaje());
-        statsButton.setOnAction(event -> abrirVentanaEstadisticas());
-        exportButton.setOnAction(event -> handleExportarConversacion());
-        attachButton.setOnAction(event -> handleAdjuntarArchivo());
-        logoutButton.setOnAction(event -> handleCerrarSesion());
+        botonEnviar.setOnAction(event -> enviarMensaje());
+        campoMensaje.setOnAction(event -> enviarMensaje());
+        botonEstadisticas.setOnAction(event -> abrirVentanaEstadisticas());
+        botonExportar.setOnAction(event -> gestionarExportarConversacion());
+        botonAdjuntar.setOnAction(event -> gestionarAdjuntarArchivo());
+        botonCerrarSesion.setOnAction(event -> gestionarCerrarSesion());
     }
 
     /**
@@ -138,7 +138,7 @@ public class ChatViewController {
      * Las extensiones permitidas se obtienen de la clase {@link Adjunto}.
      */
     @FXML
-    private void handleAdjuntarArchivo() {
+    private void gestionarAdjuntarArchivo() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar Archivo Adjunto");
 
@@ -150,14 +150,14 @@ public class ChatViewController {
         );
         fileChooser.getExtensionFilters().add(extFilter);
 
-        File selectedFile = fileChooser.showOpenDialog(attachButton.getScene().getWindow());
+        File selectedFile = fileChooser.showOpenDialog(botonAdjuntar.getScene().getWindow());
 
         if (selectedFile != null) {
             this.archivoAdjunto = selectedFile;
-            attachButton.setText(selectedFile.getName());
+            botonAdjuntar.setText(selectedFile.getName());
         } else {
             this.archivoAdjunto = null;
-            attachButton.setText("Adjuntar");
+            botonAdjuntar.setText("Adjuntar");
         }
     }
 
@@ -167,15 +167,15 @@ public class ChatViewController {
      * @param destinatario El nombre del usuario con el que se carga la conversación.
      */
     private void cargarConversacion(String destinatario) {
-        chatVBox.getChildren().clear();
-        chatVBox.setAlignment(Pos.TOP_LEFT); // Restaurar alineación por defecto
+        contenedorChat.getChildren().clear();
+        contenedorChat.setAlignment(Pos.TOP_LEFT); // Restaurar alineación por defecto
         Optional<Conversacion> convOpt = conversacionDAO.buscarConversacion(usuarioLogueado.getNombre(), destinatario);
         if (convOpt.isPresent() && !convOpt.get().getMensajes().isEmpty()) {
-            convOpt.get().getMensajes().forEach(this::addMensajeToView);
+            convOpt.get().getMensajes().forEach(this::agregarMensajeAVista);
         } else {
             mostrarMensajeBienvenida(destinatario);
         }
-        Platform.runLater(() -> chatScrollPane.setVvalue(1.0));
+        Platform.runLater(() -> panelChat.setVvalue(1.0));
     }
 
     /**
@@ -183,12 +183,12 @@ public class ChatViewController {
      * El mensaje se guarda en la persistencia y se añade a la vista del chat.
      */
     private void enviarMensaje() {
-        String texto = messageTextField.getText();
+        String texto = campoMensaje.getText();
         if ((texto.isBlank() && archivoAdjunto == null) || destinatarioActual == null) return;
 
-        chatVBox.setAlignment(Pos.TOP_LEFT); // Asegurar alineación correcta al enviar
-        if (chatVBox.getChildren().size() == 1 && chatVBox.getChildren().get(0).getStyleClass().contains("welcome-message")) {
-            chatVBox.getChildren().clear();
+        contenedorChat.setAlignment(Pos.TOP_LEFT); // Asegurar alineación correcta al enviar
+        if (contenedorChat.getChildren().size() == 1 && contenedorChat.getChildren().get(0).getStyleClass().contains("welcome-message")) {
+            contenedorChat.getChildren().clear();
         }
 
         Adjunto adjuntoParaMensaje = null;
@@ -203,7 +203,7 @@ public class ChatViewController {
             if (!adjuntoParaMensaje.esValido()) {
                 new Alert(Alert.AlertType.ERROR, "El archivo adjunto no es válido (revisa tamaño o extensión).").showAndWait();
                 archivoAdjunto = null;
-                attachButton.setText("Adjuntar");
+                botonAdjuntar.setText("Adjuntar");
                 return;
             }
 
@@ -217,7 +217,7 @@ public class ChatViewController {
                 e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Error al copiar el archivo adjunto: " + e.getMessage()).showAndWait();
                 archivoAdjunto = null;
-                attachButton.setText("Adjuntar");
+                botonAdjuntar.setText("Adjuntar");
                 return;
             }
         }
@@ -226,13 +226,13 @@ public class ChatViewController {
         boolean guardado = conversacionDAO.guardarMensaje(nuevoMensaje, usuarioLogueado.getNombre(), destinatarioActual);
 
         if (guardado) {
-            addMensajeToView(nuevoMensaje);
-            messageTextField.clear();
+            agregarMensajeAVista(nuevoMensaje);
+            campoMensaje.clear();
 
             archivoAdjunto = null;
-            attachButton.setText("Adjuntar");
+            botonAdjuntar.setText("Adjuntar");
 
-            Platform.runLater(() -> chatScrollPane.setVvalue(1.0));
+            Platform.runLater(() -> panelChat.setVvalue(1.0));
         } else {
             System.err.println("Error al guardar el mensaje.");
         }
@@ -243,7 +243,7 @@ public class ChatViewController {
      * Muestra el contenido del texto, una previsualización del adjunto (si existe) y la hora del mensaje.
      * @param mensaje El mensaje a mostrar.
      */
-    private void addMensajeToView(Mensaje mensaje) {
+    private void agregarMensajeAVista(Mensaje mensaje) {
         // 1. Crear el contenedor TextFlow y aplicar estilos de burbuja
         TextFlow textFlow = new TextFlow();
         textFlow.getStyleClass().add("chat-bubble");
@@ -289,7 +289,7 @@ public class ChatViewController {
                     HBox filePreviewBox = new HBox(5); // Espacio de 5px entre elementos
                     filePreviewBox.setAlignment(Pos.CENTER_LEFT);
 
-                    ImageView iconView = getFileIcon(adjunto.getExtension());
+                    ImageView iconView = obtenerIconoArchivo(adjunto.getExtension());
                     Text fileNameText = new Text(adjunto.getNombre());
                     fileNameText.getStyleClass().add("chat-content"); // Aplicar estilo de contenido
                     fileNameText.setUnderline(true);
@@ -324,7 +324,7 @@ public class ChatViewController {
         }
 
         // 4. Añadir la hora del mensaje
-        String formattedTime = " [" + mensaje.getFechaHora().format(formatter) + "]";
+        String formattedTime = " [" + mensaje.getFechaHora().format(formatoHora) + "]";
         Text timeText = new Text(formattedTime);
         timeText.getStyleClass().add("chat-timestamp"); // Estilo para la hora
         textFlow.getChildren().add(timeText);
@@ -337,7 +337,7 @@ public class ChatViewController {
             hbox.setAlignment(Pos.CENTER_LEFT);
         }
 
-        chatVBox.getChildren().add(hbox);
+        contenedorChat.getChildren().add(hbox);
         VBox.setMargin(hbox, new Insets(2, 0, 2, 0));
     }
 
@@ -346,7 +346,7 @@ public class ChatViewController {
      * @param extension La extensión del archivo (ej. "pdf", "docx").
      * @return Un {@link ImageView} con el icono correspondiente.
      */
-    private ImageView getFileIcon(String extension) {
+    private ImageView obtenerIconoArchivo(String extension) {
         String iconPath = null;
         switch (extension.toLowerCase()) {
             case "pdf":
@@ -390,8 +390,8 @@ public class ChatViewController {
     private void mostrarMensajeBienvenida(String destinatario) {
         Label label = new Label("¡Aún no hay mensajes! Sé el primero en saludar a " + destinatario + ".");
         label.getStyleClass().add("welcome-message");
-        chatVBox.setAlignment(Pos.CENTER); // Centrar el contenido del VBox
-        chatVBox.getChildren().add(label);
+        contenedorChat.setAlignment(Pos.CENTER); // Centrar el contenido del VBox
+        contenedorChat.getChildren().add(label);
     }
 
     /**
@@ -415,7 +415,7 @@ public class ChatViewController {
             stage.setTitle("Estadísticas de la conversación con " + destinatarioActual);
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(statsButton.getScene().getWindow());
+            stage.initOwner(botonEstadisticas.getScene().getWindow());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -427,7 +427,7 @@ public class ChatViewController {
      * Maneja la exportación de la conversación actual a diferentes formatos (TXT, CSV, ZIP).
      * Muestra un diálogo para que el usuario elija el formato y luego un FileChooser para guardar el archivo.
      */
-    private void handleExportarConversacion() {
+    private void gestionarExportarConversacion() {
         if (destinatarioActual == null) return;
 
         Optional<Conversacion> convOpt = conversacionDAO.buscarConversacion(usuarioLogueado.getNombre(), destinatarioActual);
@@ -451,7 +451,7 @@ public class ChatViewController {
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(formato + " files (*." + formato.toLowerCase() + ")", "*." + formato.toLowerCase());
             fileChooser.getExtensionFilters().add(extFilter);
 
-            File file = fileChooser.showSaveDialog(exportButton.getScene().getWindow());
+            File file = fileChooser.showSaveDialog(botonExportar.getScene().getWindow());
 
             if (file != null) {
                 if ("ZIP".equals(formato)) {
@@ -464,7 +464,7 @@ public class ChatViewController {
                         PrintWriter zipWriter = new PrintWriter(zos);
                         conversacion.getMensajes().forEach(msg -> {
                             String linea = String.format("[%s] %s: %s",
-                                    msg.getFechaHora().format(exportFormatter),
+                                    msg.getFechaHora().format(formatoExportacion),
                                     msg.getRemitente(),
                                     msg.getContenido() != null ? msg.getContenido() : ""
                             );
@@ -504,7 +504,7 @@ public class ChatViewController {
                             conversacion.getMensajes().forEach(msg -> {
                                 String adjuntoNombre = (msg.getAdjunto() != null) ? msg.getAdjunto().getNombre() : "";
                                 String linea = String.format("%s;%s;\"%s\";%s",
-                                        msg.getFechaHora().format(exportFormatter),
+                                        msg.getFechaHora().format(formatoExportacion),
                                         msg.getRemitente(),
                                         msg.getContenido() != null ? msg.getContenido().replace("\"", "\"\"") : "", // Escapar comillas dobles
                                         adjuntoNombre
@@ -515,7 +515,7 @@ public class ChatViewController {
                         else { // Formato TXT
                             conversacion.getMensajes().forEach(msg -> {
                                 String linea = String.format("[%s] %s: %s",
-                                        msg.getFechaHora().format(exportFormatter),
+                                        msg.getFechaHora().format(formatoExportacion),
                                         msg.getRemitente(),
                                         msg.getContenido() != null ? msg.getContenido() : ""
                                 );
@@ -539,7 +539,7 @@ public class ChatViewController {
      * Cierra la sesión del usuario actual, cierra la ventana de chat y abre la ventana de inicio de sesión.
      */
     @FXML
-    private void handleCerrarSesion() {
+    private void gestionarCerrarSesion() {
         SesionUsuario.getInstance().cerrarSesion();
 
         try {
@@ -552,7 +552,7 @@ public class ChatViewController {
             loginStage.setResizable(false);
             loginStage.show();
 
-            Stage chatStage = (Stage) logoutButton.getScene().getWindow();
+            Stage chatStage = (Stage) botonCerrarSesion.getScene().getWindow();
             chatStage.close();
         } catch (IOException e) {
             e.printStackTrace();

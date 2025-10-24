@@ -23,31 +23,31 @@ import java.io.IOException;
  */
 public class RegistroController {
     @FXML
-    private TextField txtNombre;
+    private TextField campoNombre;
 
     @FXML
-    private TextField txtApellido;
+    private TextField campoApellido;
 
     @FXML
-    private TextField txtEmail;
+    private TextField campoEmail;
 
     @FXML
-    private PasswordField txtPassword;
+    private PasswordField campoPassword;
 
     @FXML
-    private PasswordField txtConfirmarPassword;
+    private PasswordField campoConfirmarPassword;
 
     private UsuarioDAO usuarioDAO;
-    private SesionUsuario sessionManager;
+    private SesionUsuario gestorSesion;
 
     /**
      * Inicializa el controlador después de que se hayan cargado los elementos FXML.
      * Se encarga de instanciar los objetos necesarios para la gestión de usuarios y la sesión.
      */
     @FXML
-    public void initialize() {
+    public void inicializar() {
         usuarioDAO = new UsuarioDAO();
-        sessionManager = SesionUsuario.getInstance();
+        gestorSesion = SesionUsuario.getInstance();
     }
 
     /**
@@ -57,12 +57,12 @@ public class RegistroController {
      * Si el registro es exitoso, el usuario inicia sesión y se abre la ventana de chat.
      */
     @FXML
-    private void handleRegistrar() {
-        String nombre = txtNombre.getText();
-        String apellido = txtApellido.getText();
-        String email = txtEmail.getText();
-        String password = txtPassword.getText();
-        String confirmarPassword = txtConfirmarPassword.getText();
+    private void gestionarRegistro() {
+        String nombre = campoNombre.getText();
+        String apellido = campoApellido.getText();
+        String email = campoEmail.getText();
+        String password = campoPassword.getText();
+        String confirmarPassword = campoConfirmarPassword.getText();
 
         // Validaciones de campos vacíos
         if (nombre == null || nombre.trim().isEmpty()) {
@@ -116,7 +116,7 @@ public class RegistroController {
 
         if (registrado) {
             // 1. Establecer la sesión para el nuevo usuario
-            sessionManager.setUsuarioActual(nuevoUsuario);
+            gestorSesion.setUsuarioActual(nuevoUsuario);
 
             // 2. Abrir la ventana de chat
             abrirVentanaChat();
@@ -137,12 +137,12 @@ public class RegistroController {
 
             // Crear una nueva escena y un nuevo stage
             Stage stage = new Stage();
-            stage.setTitle("Chat Offline - " + sessionManager.getUsuarioActual().getNombre());
+            stage.setTitle("Chat Offline - " + gestorSesion.getUsuarioActual().getNombre());
             stage.setScene(new Scene(root));
             stage.show();
 
             // Cerrar la ventana de registro actual
-            Stage registroStage = (Stage) txtNombre.getScene().getWindow();
+            Stage registroStage = (Stage) campoNombre.getScene().getWindow();
             registroStage.close();
 
         } catch (IOException e) {
@@ -156,7 +156,7 @@ public class RegistroController {
      * Cierra la ventana de registro actual.
      */
     @FXML
-    private void handleCancelar() {
+    private void gestionarCancelacion() {
         cerrarVentana();
     }
 
@@ -164,7 +164,7 @@ public class RegistroController {
      * Cierra la ventana actual del registro.
      */
     private void cerrarVentana() {
-        Stage stage = (Stage) txtNombre.getScene().getWindow();
+        Stage stage = (Stage) campoNombre.getScene().getWindow();
         stage.close();
     }
 
