@@ -45,7 +45,7 @@ public class RegistroController {
      * Se encarga de instanciar los objetos necesarios para la gestión de usuarios y la sesión.
      */
     @FXML
-    public void inicializar() {
+    public void initialize() {
         usuarioDAO = new UsuarioDAO();
         gestorSesion = SesionUsuario.getInstance();
     }
