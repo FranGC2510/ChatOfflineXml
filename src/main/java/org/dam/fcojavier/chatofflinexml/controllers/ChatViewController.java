@@ -85,7 +85,7 @@ public class ChatViewController {
      * Inicializa el controlador después de que se hayan cargado los elementos FXML.
      * Configura los DAOs, obtiene el usuario logueado, carga la lista de usuarios y configura los listeners de la UI.
      */
-    public void inicializar() {
+    public void initialize() {
         this.usuarioDAO = new UsuarioDAO();
         this.conversacionDAO = new ConversacionDAO();
         this.usuarioLogueado = SesionUsuario.getInstance().getUsuarioActual();
@@ -448,7 +448,8 @@ public class ChatViewController {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Guardar Conversación");
             fileChooser.setInitialFileName("conversacion_" + destinatarioActual + "." + formato.toLowerCase());
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(formato + " files (*." + formato.toLowerCase() + ")", "*." + formato.toLowerCase());
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(formato + " files (*." +
+                    formato.toLowerCase() + ")", "*." + formato.toLowerCase());
             fileChooser.getExtensionFilters().add(extFilter);
 
             File file = fileChooser.showSaveDialog(botonExportar.getScene().getWindow());
@@ -486,7 +487,8 @@ public class ChatViewController {
                                     Files.copy(adjuntoPath, zos);
                                     zos.closeEntry();
                                 } else {
-                                    System.err.println("Advertencia: El adjunto '" + mensaje.getAdjunto().getNombre() + "' no se encontró en la ruta esperada: " + adjuntoPath);
+                                    System.err.println("Advertencia: El adjunto '" + mensaje.getAdjunto().getNombre() +
+                                            "' no se encontró en la ruta esperada: " + adjuntoPath);
                                 }
                             }
                         }

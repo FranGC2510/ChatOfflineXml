@@ -6,38 +6,68 @@
         <mensaje>
             <remitente>Fran</remitente>
             <destinatario>Antonio</destinatario>
-            <fechaHora>24/10/2025 18:08:33</fechaHora>
-            <contenido>Hola</contenido>
+            <fechaHora>25/10/2025 16:42:49</fechaHora>
+            <contenido>Hola!</contenido>
         </mensaje>
         <mensaje>
             <remitente>Fran</remitente>
             <destinatario>Antonio</destinatario>
-            <fechaHora>24/10/2025 18:08:38</fechaHora>
-            <contenido>mira esto</contenido>
+            <fechaHora>25/10/2025 16:43:00</fechaHora>
+            <contenido>Que tal estas?</contenido>
         </mensaje>
         <mensaje>
             <remitente>Fran</remitente>
             <destinatario>Antonio</destinatario>
-            <fechaHora>24/10/2025 18:08:48</fechaHora>
-            <contenido>flipa </contenido>
+            <fechaHora>25/10/2025 16:44:08</fechaHora>
+            <contenido>Me puedes pasar el horario de clase? Es que lo borré sin querer el otro dia</contenido>
+        </mensaje>
+        <mensaje>
+            <remitente>Antonio</remitente>
+            <destinatario>Fran</destinatario>
+            <fechaHora>25/10/2025 16:44:31</fechaHora>
+            <contenido>Holaaa</contenido>
+        </mensaje>
+        <mensaje>
+            <remitente>Antonio</remitente>
+            <destinatario>Fran</destinatario>
+            <fechaHora>25/10/2025 16:44:41</fechaHora>
+            <contenido>Si claro te lo paso ya</contenido>
+        </mensaje>
+        <mensaje>
+            <remitente>Antonio</remitente>
+            <destinatario>Fran</destinatario>
+            <fechaHora>25/10/2025 16:46:58</fechaHora>
+            <contenido></contenido>
             <adjunto>
-                <nombre>Captura de pantalla 2025-10-22 a las 10.13.30.png</nombre>
-                <ruta>media/Captura de pantalla 2025-10-22 a las 10.13.30.png</ruta>
-                <tamano>42917</tamano>
-                <tipo>png</tipo>
+                <nombre>d73a82c5-c315-4e0f-8849-9e699718c94d.jpeg</nombre>
+                <ruta>media/d73a82c5-c315-4e0f-8849-9e699718c94d.jpeg</ruta>
+                <tamano>296514</tamano>
+                <tipo>jpeg</tipo>
             </adjunto>
         </mensaje>
         <mensaje>
             <remitente>Antonio</remitente>
             <destinatario>Fran</destinatario>
-            <fechaHora>24/10/2025 18:25:28</fechaHora>
-            <contenido>que chulo esta</contenido>
+            <fechaHora>25/10/2025 16:47:44</fechaHora>
+            <contenido>Me harias un favor si me pasas lo que disteis el otro dia que falte </contenido>
         </mensaje>
         <mensaje>
-            <remitente>Antonio</remitente>
-            <destinatario>Fran</destinatario>
-            <fechaHora>24/10/2025 18:25:32</fechaHora>
-            <contenido>me encanta</contenido>
+            <remitente>Fran</remitente>
+            <destinatario>Antonio</destinatario>
+            <fechaHora>25/10/2025 16:48:34</fechaHora>
+            <contenido>Claro aqui tienes</contenido>
+            <adjunto>
+                <nombre>Actividad Emprendimiento y Desarrollo sostenible.pdf</nombre>
+                <ruta>media/Actividad Emprendimiento y Desarrollo sostenible.pdf</ruta>
+                <tamano>247036</tamano>
+                <tipo>pdf</tipo>
+            </adjunto>
+        </mensaje>
+        <mensaje>
+            <remitente>Fran</remitente>
+            <destinatario>Antonio</destinatario>
+            <fechaHora>25/10/2025 16:49:25</fechaHora>
+            <contenido>Gracias por el horario</contenido>
         </mensaje>
     </mensajes>
 </conversacion>

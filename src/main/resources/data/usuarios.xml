@@ -2,19 +2,19 @@
 <Usuarios>
     <usuario>
         <nombre>Antonio</nombre>
-        <apellido>Lopez</apellido>
+        <apellido>López</apellido>
         <email>ant@gmail.es</email>
         <password>$2a$10$LpWGuh46eQgLiUXUsDT15e/j7pCFEPTpY4LCOAkgGzGb5SenQW2IG</password>
     </usuario>
     <usuario>
         <nombre>Fran</nombre>
-        <apellido>Garcia</apellido>
+        <apellido>García</apellido>
         <email>fran@gmail.es</email>
         <password>$2a$10$imrm0HBsNSxnA/2WdpVxiearD1FEPjeOs8C6WexZl9pe/d0/FV4B6</password>
     </usuario>
     <usuario>
         <nombre>Maria</nombre>
-        <apellido>Lopez</apellido>
+        <apellido>Sánchez</apellido>
         <email>mar@gmail.es</email>
         <password>$2a$10$hqgjiewBpT.PxELIDNb64eLMSWr9DxvRkNDTlHSlz6wB9CFO3deQO</password>
     </usuario>
